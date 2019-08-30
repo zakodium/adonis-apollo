@@ -1,0 +1,3 @@
+extends: cheminfo-typescript
+parserOptions:
+  project: tsconfig.lint.json

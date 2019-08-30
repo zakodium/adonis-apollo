@@ -1,0 +1,60 @@
+{
+  "name": "adonis-apollo",
+  "version": "0.0.0",
+  "description": "Apollo GraphQL server for AdonisJs",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "keywords": [],
+  "author": "Michaël Zasso",
+  "license": "MIT",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rimraf lib",
+    "eslint": "eslint src --ext ts --cache",
+    "eslint-fix": "npm run eslint -- --fix",
+    "prepublishOnly": "npm run tsc",
+    "test": "npm run test-coverage && npm run eslint",
+    "test-coverage": "npm run test-only -- --coverage",
+    "test-only": "jest",
+    "tsc": "npm run clean && npm run tsc-cjs",
+    "tsc-cjs": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zakodium/adonis-apollo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zakodium/adonis-apollo/issues"
+  },
+  "homepage": "https://github.com/zakodium/adonis-apollo#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-cheminfo": "^2.0.3",
+    "eslint-config-cheminfo-typescript": "^4.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.6.2"
+  }
+}
