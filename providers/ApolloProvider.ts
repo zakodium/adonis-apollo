@@ -11,7 +11,7 @@ export default class ApolloProvider {
   }
 
   public register(): void {
-    this.$container.singleton('ApolloServer', () => {
+    this.$container.singleton('Apollo/Server', () => {
       const Config: ConfigContract = this.$container.use('Adonis/Core/Config');
       return new ApolloServer(Config.get('apollo', {}));
     });
