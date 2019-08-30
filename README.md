@@ -11,14 +11,23 @@ Apollo GraphQL server for AdonisJs.
 
 `$ npm i adonis-apollo`
 
+- Add `'adonis-apollo'` to your providers in `start/app.ts`.
+- Add `"adonis-apollo"` to the "types" array in `tsconfig.json`.
+
 ## Usage
 
-```js
-import { myModule } from 'adonis-apollo';
+Bind the apollo server to your AdonisJs application.  
+In `start/routes.ts`:
 
-const result = myModule(args);
-// result is ...
+```ts
+import ApolloServer from '@ioc:ApolloServer';
+
+ApolloServer.applyMiddleware({ Route });
 ```
+
+## Configuration
+
+TODO
 
 ## License
 

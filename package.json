@@ -2,21 +2,23 @@
   "name": "adonis-apollo",
   "version": "0.0.0",
   "description": "Apollo GraphQL server for AdonisJs",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./lib/providers/ApolloProvider.js",
+  "types": "./lib/src/types.d.ts",
+  "files": [
+    "lib"
+  ],
   "keywords": [],
   "author": "Michaël Zasso",
   "license": "MIT",
-  "files": [
-    "src",
-    "lib"
-  ],
+  "adonisjs": {
+    "instructions": "./lib/instructions.js"
+  },
   "scripts": {
     "clean": "rimraf lib",
-    "eslint": "eslint src --ext ts --cache",
+    "eslint": "eslint src providers instructions.ts --ext ts --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepublishOnly": "npm run tsc",
-    "test": "npm run test-coverage && npm run eslint",
+    "test": "npm run eslint",
     "test-coverage": "npm run test-only -- --coverage",
     "test-only": "jest",
     "tsc": "npm run clean && npm run tsc-cjs",
@@ -41,7 +43,12 @@
     "tabWidth": 2,
     "trailingComma": "all"
   },
+  "peerDependencies": {
+    "@adonisjs/core": "2.x.x"
+  },
   "devDependencies": {
+    "@adonisjs/core": "^2.0.14",
+    "@adonisjs/fold": "^6.1.5",
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
@@ -56,5 +63,12 @@
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.6.2"
+  },
+  "dependencies": {
+    "@apollographql/graphql-playground-html": "^1.6.24",
+    "apollo-server-core": "^2.9.1",
+    "graphql": "^14.5.4",
+    "graphql-tools": "^4.0.5",
+    "merge-graphql-schemas": "^1.7.0"
   }
 }
