@@ -17,7 +17,7 @@ export default class ApolloServer extends ApolloServerBase {
   private _path: string;
 
   public constructor(config: ApolloConfig) {
-    const { path = '/graphql', resolvers, schemas, ...rest } = config;
+    const { path = '/graphql', resolvers, schemas, apolloServer } = config;
     const resolversPath = resolve(resolvers);
     const schemasPath = resolve(schemas);
     super({
@@ -25,7 +25,7 @@ export default class ApolloServer extends ApolloServerBase {
         typeDefs: mergeTypes(fileLoader(schemasPath, { recursive: true })),
         resolvers: mergeResolvers(fileLoader(resolversPath)),
       }),
-      ...rest,
+      ...apolloServer,
     });
     this._path = path;
   }

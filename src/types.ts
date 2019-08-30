@@ -16,7 +16,7 @@ declare module '@ioc:Apollo/Server' {
 declare module '@ioc:Apollo/Config' {
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
 
-  interface ApolloConfig /*extends Omit<ApolloCoreConfig, 'schema' | 'resolvers' | 'typeDefs'>*/ {
+  interface ApolloConfig {
     resolvers: string;
     schemas: string;
     /**
@@ -24,6 +24,7 @@ declare module '@ioc:Apollo/Config' {
      * @default `'/graphql'`
      */
     path?: string;
+    apolloServer?: Omit<ApolloCoreConfig, 'schema' | 'resolvers' | 'typeDefs'>;
   }
 
   // eslint-disable-next-line no-undef
