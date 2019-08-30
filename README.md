@@ -13,6 +13,7 @@ Apollo GraphQL server for AdonisJs.
 
 - Add `'adonis-apollo'` to your providers in `start/app.ts`.
 - Add `"adonis-apollo"` to the "types" array in `tsconfig.json`.
+- Add `"app/Schemas/*"` to the "copyToBuild" array in `.adonisrc.json`.
 
 ## Usage
 
