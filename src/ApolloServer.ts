@@ -9,23 +9,47 @@ import {
   RenderPageOptions as PlaygroundRenderPageOptions,
 } from '@apollographql/graphql-playground-html';
 import { ServerRegistration } from '@ioc:Apollo/Server';
-import ApolloConfig from '@ioc:Apollo/Config';
+import ApolloConfig, { ApolloBaseContext } from '@ioc:Apollo/Config';
+import { EnvContract } from '@ioc:Adonis/Core/Env';
 
 import { graphqlAdonis } from './graphqlAdonis';
+
+function makeContextFunction(
+  context?: (args: ApolloBaseContext) => any,
+): (args: ApolloBaseContext) => any {
+  if (typeof context === 'function') {
+    return function ctxFn(args: ApolloBaseContext) {
+      return context(args);
+    };
+  } else {
+    return function ctxFn(args: ApolloBaseContext) {
+      return args;
+    };
+  }
+}
 
 export default class ApolloServer extends ApolloServerBase {
   private _path: string;
 
-  public constructor(config: ApolloConfig) {
-    const { path = '/graphql', resolvers, schemas, apolloServer } = config;
-    const resolversPath = resolve(resolvers);
-    const schemasPath = resolve(schemas);
+  public constructor(config: ApolloConfig, Env: EnvContract) {
+    const {
+      path = '/graphql',
+      resolvers = 'app/Resolvers',
+      schemas = 'app/Schemas',
+      apolloServer = {},
+    } = config;
+    const isProd = Env.get('NODE_ENV') === 'production';
+    const resolversPath = resolve(isProd ? resolvers : `build/${resolvers}`);
+    const schemasPath = resolve(isProd ? schemas : `build/${schemas}`);
+    let { context, ...rest } = apolloServer;
+
     super({
       schema: makeExecutableSchema({
         typeDefs: mergeTypes(fileLoader(schemasPath, { recursive: true })),
         resolvers: mergeResolvers(fileLoader(resolversPath)),
       }),
-      ...apolloServer,
+      context: makeContextFunction(context),
+      ...rest,
     });
     this._path = path;
   }
@@ -41,7 +65,7 @@ export default class ApolloServer extends ApolloServerBase {
     Route.post(this._path, this.getGraphqlHandler());
   }
 
-  private getPlaygroundHandler() {
+  public getPlaygroundHandler() {
     return async (ctx: HttpContextContract) => {
       const playgroundRenderPageOptions: PlaygroundRenderPageOptions = {
         endpoint: this._path,
@@ -51,7 +75,7 @@ export default class ApolloServer extends ApolloServerBase {
     };
   }
 
-  private getGraphqlHandler() {
+  public getGraphqlHandler() {
     return async (ctx: HttpContextContract) => {
       const options = await this.createGraphQLServerOptions(ctx);
       return graphqlAdonis(options, ctx);
