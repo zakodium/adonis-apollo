@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/zakodium/adonis-apollo/compare/v0.2.0...v0.3.0) (2019-09-05)
+
+
+### Features
+
+* pass Adonis context to graphql context function ([3c61076](https://github.com/zakodium/adonis-apollo/commit/3c61076))
+
+
+
 # [0.2.0](https://github.com/zakodium/adonis-apollo/compare/v0.1.1...v0.2.0) (2019-08-30)
 
 
