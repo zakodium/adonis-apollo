@@ -30,6 +30,13 @@ ApolloServer.applyMiddleware({ Route });
 
 TODO
 
+### Uploads
+
+To enable support for GraphQL uploads:
+
+- Update the config of the bodyparser in `config/bodyparser.ts` by adding your GraphQL route (by default: `/graphql`) to the `multipart.processManually` array.
+- Add the Upload scalar to your schema: `scalar Upload`.
+
 ## License
 
 [MIT](./LICENSE)

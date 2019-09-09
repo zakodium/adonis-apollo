@@ -1,7 +1,12 @@
 import { resolve } from 'path';
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { ApolloServerBase, GraphQLOptions } from 'apollo-server-core';
+import {
+  ApolloServerBase,
+  GraphQLOptions,
+  formatApolloErrors,
+  processFileUploads,
+} from 'apollo-server-core';
 import { makeExecutableSchema } from 'graphql-tools';
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
 import {
@@ -29,7 +34,11 @@ function makeContextFunction(
 }
 
 export default class ApolloServer extends ApolloServerBase {
-  private _path: string;
+  private $path: string;
+
+  protected supportsUploads(): boolean {
+    return true;
+  }
 
   public constructor(config: ApolloConfig, Env: EnvContract) {
     const {
@@ -51,7 +60,7 @@ export default class ApolloServer extends ApolloServerBase {
       context: makeContextFunction(context),
       ...rest,
     });
-    this._path = path;
+    this.$path = path;
   }
 
   private async createGraphQLServerOptions(
@@ -61,14 +70,17 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public applyMiddleware({ Route }: ServerRegistration): void {
-    Route.get(this._path, this.getPlaygroundHandler());
-    Route.post(this._path, this.getGraphqlHandler());
+    Route.get(this.$path, this.getPlaygroundHandler());
+    const postRoute = Route.post(this.$path, this.getGraphqlHandler());
+    if (this.uploadsConfig) {
+      postRoute.middleware(this.getUploadsMiddleware());
+    }
   }
 
   public getPlaygroundHandler() {
     return async (ctx: HttpContextContract) => {
       const playgroundRenderPageOptions: PlaygroundRenderPageOptions = {
-        endpoint: this._path,
+        endpoint: this.$path,
       };
       ctx.response.header('Content-Type', 'text/html');
       return renderPlaygroundPage(playgroundRenderPageOptions);
@@ -79,6 +91,33 @@ export default class ApolloServer extends ApolloServerBase {
     return async (ctx: HttpContextContract) => {
       const options = await this.createGraphQLServerOptions(ctx);
       return graphqlAdonis(options, ctx);
+    };
+  }
+
+  public getUploadsMiddleware() {
+    return async (ctx: HttpContextContract, next: () => Promise<void>) => {
+      if (ctx.request.is(['multipart/form-data'])) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const processed = await processFileUploads!(
+            ctx.request.request,
+            ctx.response.response,
+            this.uploadsConfig,
+          );
+          ctx.request.setInitialBody(processed);
+          return next();
+        } catch (error) {
+          if (error.status && error.expose) {
+            ctx.response.status(error.status);
+          }
+          throw formatApolloErrors([error], {
+            formatter: this.requestOptions.formatError,
+            debug: this.requestOptions.debug,
+          });
+        }
+      } else {
+        return next();
+      }
     };
   }
 }
