@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/zakodium/adonis-apollo/compare/v0.3.0...v0.4.0) (2019-09-09)
+
+
+### Bug Fixes
+
+* use correct type ([0483586](https://github.com/zakodium/adonis-apollo/commit/0483586))
+
+
+### Features
+
+* add support for file uploads ([7ada3ac](https://github.com/zakodium/adonis-apollo/commit/7ada3ac))
+
+
+
 # [0.3.0](https://github.com/zakodium/adonis-apollo/compare/v0.2.0...v0.3.0) (2019-09-05)
 
 
