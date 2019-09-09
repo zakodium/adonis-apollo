@@ -9,7 +9,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 export async function graphqlAdonis(
   options: GraphQLOptions,
   ctx: HttpContextContract,
-): Promise<any> {
+): Promise<string> {
   try {
     const { graphqlResponse, responseInit } = await runHttpQuery([ctx], {
       method: 'POST',
