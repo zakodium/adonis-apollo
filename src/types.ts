@@ -1,11 +1,8 @@
 declare module '@ioc:Apollo/Server' {
   import { Readable } from 'stream';
-  import { RouterContract } from '@ioc:Adonis/Core/Route';
+  import { RouterContract, RouteHandlerNode } from '@ioc:Adonis/Core/Route';
+  import { MiddlewareNode } from '@ioc:Adonis/Core/Middleware';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-  import {
-    RouteHandlerNode,
-    MiddlewareNode,
-  } from '@poppinss/http-server/build/src/contracts';
 
   export interface IUpload {
     filename: string;
@@ -21,9 +18,9 @@ declare module '@ioc:Apollo/Server' {
 
   class ApolloServer {
     public applyMiddleware(config: ServerRegistration): void;
-    public getGraphqlHandler(): RouteHandlerNode<HttpContextContract>;
-    public getPlaygroundHandler(): RouteHandlerNode<HttpContextContract>;
-    public getUploadsMiddleware(): MiddlewareNode<HttpContextContract>;
+    public getGraphqlHandler(): RouteHandlerNode;
+    public getPlaygroundHandler(): RouteHandlerNode;
+    public getUploadsMiddleware(): MiddlewareNode;
   }
 
   const server: ApolloServer;
