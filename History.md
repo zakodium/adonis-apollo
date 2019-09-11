@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/zakodium/adonis-apollo/compare/v0.4.1...v0.4.2) (2019-09-11)
+
+
+### Bug Fixes
+
+* type extends of ApolloServerBase ([698a2f8](https://github.com/zakodium/adonis-apollo/commit/698a2f8))
+
+
+
 # [0.4.0](https://github.com/zakodium/adonis-apollo/compare/v0.3.0...v0.4.0) (2019-09-09)
 
 
