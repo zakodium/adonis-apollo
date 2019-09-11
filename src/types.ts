@@ -1,5 +1,6 @@
 declare module '@ioc:Apollo/Server' {
   import { Readable } from 'stream';
+  import { ApolloServerBase } from 'apollo-server-core';
   import { RouterContract, RouteHandlerNode } from '@ioc:Adonis/Core/Route';
   import { MiddlewareNode } from '@ioc:Adonis/Core/Middleware';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -16,7 +17,7 @@ declare module '@ioc:Apollo/Server' {
     Route: RouterContract;
   }
 
-  class ApolloServer {
+  class ApolloServer extends ApolloServerBase {
     public applyMiddleware(config: ServerRegistration): void;
     public getGraphqlHandler(): RouteHandlerNode;
     public getPlaygroundHandler(): RouteHandlerNode;
