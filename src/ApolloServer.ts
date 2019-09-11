@@ -47,9 +47,12 @@ export default class ApolloServer extends ApolloServerBase {
       schemas = 'app/Schemas',
       apolloServer = {},
     } = config;
-    const isProd = Env.get('NODE_ENV') === 'production';
-    const resolversPath = resolve(isProd ? resolvers : `build/${resolvers}`);
-    const schemasPath = resolve(isProd ? schemas : `build/${schemas}`);
+    const nodeEnv = Env.get('NODE_ENV');
+    const isProdOrTest = nodeEnv === 'production' || nodeEnv === 'test';
+    const resolversPath = resolve(
+      isProdOrTest ? resolvers : `build/${resolvers}`,
+    );
+    const schemasPath = resolve(isProdOrTest ? schemas : `build/${schemas}`);
     let { context, ...rest } = apolloServer;
 
     super({
