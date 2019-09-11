@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/zakodium/adonis-apollo/compare/v0.4.2...v0.4.3) (2019-09-11)
+
+
+### Bug Fixes
+
+* do not use build by default in test env ([fd22643](https://github.com/zakodium/adonis-apollo/commit/fd22643))
+
+
+
 ## [0.4.2](https://github.com/zakodium/adonis-apollo/compare/v0.4.1...v0.4.2) (2019-09-11)
 
 
