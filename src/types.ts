@@ -30,6 +30,7 @@ declare module '@ioc:Apollo/Server' {
 
 declare module '@ioc:Apollo/Config' {
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
+  import { IExecutableSchemaDefinition } from 'graphql-tools';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
   export interface ApolloBaseContext {
@@ -64,6 +65,14 @@ declare module '@ioc:Apollo/Config' {
     > & {
       context?: (arg: ApolloBaseContext) => any;
     };
+
+    /**
+     * Additional config passed to the `makeExecutableSchema` function from `graphql-tools`.
+     */
+    executableSchema?: Omit<
+      IExecutableSchemaDefinition,
+      'typeDefs' | 'resolvers'
+    >;
   }
 
   export default ApolloConfig;

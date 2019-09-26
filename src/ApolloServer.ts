@@ -46,6 +46,7 @@ export default class ApolloServer extends ApolloServerBase {
       resolvers = 'app/Resolvers',
       schemas = 'app/Schemas',
       apolloServer = {},
+      executableSchema = {},
     } = config;
     const nodeEnv = Env.get('NODE_ENV');
     const isProdOrTest = nodeEnv === 'production' || nodeEnv === 'test';
@@ -57,6 +58,7 @@ export default class ApolloServer extends ApolloServerBase {
 
     super({
       schema: makeExecutableSchema({
+        ...executableSchema,
         typeDefs: mergeTypes(fileLoader(schemasPath, { recursive: true })),
         resolvers: mergeResolvers(fileLoader(resolversPath)),
       }),
