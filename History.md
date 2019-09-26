@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/zakodium/adonis-apollo/compare/v0.4.3...v0.5.0) (2019-09-26)
+
+
+### Features
+
+* add support for passing options to makeExecutableSchema ([7b8b1d3](https://github.com/zakodium/adonis-apollo/commit/7b8b1d3))
+
+
+
 ## [0.4.3](https://github.com/zakodium/adonis-apollo/compare/v0.4.2...v0.4.3) (2019-09-11)
 
 
