@@ -50,6 +50,7 @@
     "@adonisjs/core": "^2.0.20",
     "@adonisjs/fold": "^6.1.5",
     "@types/jest": "^24.0.23",
+    "@types/node-fetch": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
     "eslint": "^6.7.1",
