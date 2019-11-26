@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/zakodium/adonis-apollo/compare/v0.5.0...v0.6.0) (2019-11-26)
+
+
+### Bug Fixes
+
+* adapt to latest adonis ([938192a](https://github.com/zakodium/adonis-apollo/commit/938192a4d4dd0a10948f0a2f901faab3d8d8a061))
+
+
+
 # [0.5.0](https://github.com/zakodium/adonis-apollo/compare/v0.4.3...v0.5.0) (2019-09-26)
 
 
