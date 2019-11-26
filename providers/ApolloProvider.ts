@@ -1,6 +1,5 @@
 import { IocContract } from '@adonisjs/fold';
 import { ConfigContract } from '@ioc:Adonis/Core/Config';
-import { EnvContract } from '@ioc:Adonis/Core/Env';
 
 import ApolloServer from '../src/ApolloServer';
 
@@ -14,8 +13,7 @@ export default class ApolloProvider {
   public register(): void {
     this.$container.singleton('Apollo/Server', () => {
       const Config: ConfigContract = this.$container.use('Adonis/Core/Config');
-      const Env: EnvContract = this.$container.use('Adonis/Core/Env');
-      return new ApolloServer(Config.get('apollo', {}), Env);
+      return new ApolloServer(Config.get('apollo', {}));
     });
   }
 

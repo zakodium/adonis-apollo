@@ -15,7 +15,6 @@ import {
 } from '@apollographql/graphql-playground-html';
 import { ServerRegistration } from '@ioc:Apollo/Server';
 import ApolloConfig, { ApolloBaseContext } from '@ioc:Apollo/Config';
-import { EnvContract } from '@ioc:Adonis/Core/Env';
 
 import { graphqlAdonis } from './graphqlAdonis';
 
@@ -40,7 +39,7 @@ export default class ApolloServer extends ApolloServerBase {
     return true;
   }
 
-  public constructor(config: ApolloConfig, Env: EnvContract) {
+  public constructor(config: ApolloConfig) {
     const {
       path = '/graphql',
       resolvers = 'app/Resolvers',
@@ -48,12 +47,8 @@ export default class ApolloServer extends ApolloServerBase {
       apolloServer = {},
       executableSchema = {},
     } = config;
-    const nodeEnv = Env.get('NODE_ENV');
-    const isProdOrTest = nodeEnv === 'production' || nodeEnv === 'test';
-    const resolversPath = resolve(
-      isProdOrTest ? resolvers : `build/${resolvers}`,
-    );
-    const schemasPath = resolve(isProdOrTest ? schemas : `build/${schemas}`);
+    const resolversPath = resolve(resolvers);
+    const schemasPath = resolve(schemas);
     let { context, ...rest } = apolloServer;
 
     super({

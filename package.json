@@ -49,26 +49,26 @@
   "devDependencies": {
     "@adonisjs/core": "^2.0.20",
     "@adonisjs/fold": "^6.1.5",
-    "@types/jest": "^24.0.18",
-    "@typescript-eslint/eslint-plugin": "^2.2.0",
-    "@typescript-eslint/parser": "^2.2.0",
-    "eslint": "^6.3.0",
-    "eslint-config-cheminfo": "^2.0.3",
-    "eslint-config-cheminfo-typescript": "^4.1.1",
+    "@types/jest": "^24.0.23",
+    "@typescript-eslint/eslint-plugin": "^2.9.0",
+    "@typescript-eslint/parser": "^2.9.0",
+    "eslint": "^6.7.1",
+    "eslint-config-cheminfo": "^2.0.4",
+    "eslint-config-cheminfo-typescript": "^4.1.2",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.17.0",
-    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.6.2"
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.2"
   },
   "dependencies": {
     "@apollographql/graphql-playground-html": "^1.6.24",
-    "apollo-server-core": "^2.9.3",
-    "graphql": "^14.5.4",
-    "graphql-tools": "^4.0.5",
-    "merge-graphql-schemas": "^1.7.0"
+    "apollo-server-core": "^2.9.12",
+    "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.6",
+    "merge-graphql-schemas": "^1.7.3"
   }
 }
