@@ -1,3 +1,12 @@
+## [0.6.2](https://github.com/zakodium/adonis-apollo/compare/v0.6.1...v0.6.2) (2019-12-02)
+
+
+### Bug Fixes
+
+* use correct base path for templates ([8a43817](https://github.com/zakodium/adonis-apollo/commit/8a438172efb157072886dfd436f59a78bd9ef929))
+
+
+
 ## [0.6.1](https://github.com/zakodium/adonis-apollo/compare/v0.6.0...v0.6.1) (2019-12-02)
 
 
