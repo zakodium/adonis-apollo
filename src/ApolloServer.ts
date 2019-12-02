@@ -14,7 +14,7 @@ import {
   RenderPageOptions as PlaygroundRenderPageOptions,
 } from '@apollographql/graphql-playground-html';
 import { ServerRegistration } from '@ioc:Apollo/Server';
-import ApolloConfig, { ApolloBaseContext } from '@ioc:Apollo/Config';
+import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
 
 import { graphqlAdonis } from './graphqlAdonis';
 

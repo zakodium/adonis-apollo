@@ -37,7 +37,7 @@ declare module '@ioc:Apollo/Config' {
     ctx: HttpContextContract;
   }
 
-  interface ApolloConfig {
+  export interface ApolloConfig {
     /**
      * Path to the directory containing resolvers
      * @default `'app/Resolvers'`
@@ -74,6 +74,4 @@ declare module '@ioc:Apollo/Config' {
       'typeDefs' | 'resolvers'
     >;
   }
-
-  export default ApolloConfig;
 }
