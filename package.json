@@ -5,7 +5,8 @@
   "main": "./lib/providers/ApolloProvider.js",
   "types": "./lib/src/types.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "templates"
   ],
   "keywords": [
     "adonisjs",
@@ -18,7 +19,6 @@
   "license": "MIT",
   "adonisjs": {
     "templates": {
-      "basePath": "./lib/config",
       "config": [
         "apollo.txt"
       ]
@@ -32,7 +32,7 @@
     "clean": "rimraf lib",
     "eslint": "eslint src providers --ext ts --cache",
     "eslint-fix": "npm run eslint -- --fix",
-    "prepublishOnly": "npm run tsc && copyfiles \"config/**/*.txt\" lib",
+    "prepublishOnly": "npm run tsc",
     "test": "npm run eslint",
     "test-coverage": "npm run test-only -- --coverage",
     "test-only": "jest",
@@ -68,7 +68,6 @@
     "@types/node-fetch": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
-    "copyfiles": "^2.1.1",
     "eslint": "^6.7.1",
     "eslint-config-cheminfo": "^2.0.4",
     "eslint-config-cheminfo-typescript": "^4.1.2",
