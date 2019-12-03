@@ -1,3 +1,7 @@
+## [0.6.4](https://github.com/zakodium/adonis-apollo/compare/v0.6.3...v0.6.4) (2019-12-03)
+
+
+
 ## [0.6.3](https://github.com/zakodium/adonis-apollo/compare/v0.6.2...v0.6.3) (2019-12-03)
 
 
