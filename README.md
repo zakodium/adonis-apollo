@@ -41,9 +41,9 @@ To enable support for GraphQL uploads:
 
 [MIT](./LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/adonis-apollo.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/adonis-apollo.svg
 [npm-url]: https://www.npmjs.com/package/adonis-apollo
 [ci-image]: https://github.com/zakodium/adonis-datadrive/workflows/Node.js%20CI/badge.svg?branch=master
 [ci-url]: https://github.com/zakodium/adonis-datadrive/actions?query=workflow%3A%22Node.js+CI%22
-[download-image]: https://img.shields.io/npm/dm/adonis-apollo.svg?style=flat-square
+[download-image]: https://img.shields.io/npm/dm/adonis-apollo.svg
 [download-url]: https://www.npmjs.com/package/adonis-apollo
