@@ -11,6 +11,6 @@
     "types": ["@adonisjs/core"],
     "strictFunctionTypes": false
   },
-  "include": ["./src/**/*", "./providers/**/*", "./instructions.ts"],
+  "include": ["./src/**/*", "./providers/**/*"],
   "exclude": ["./src/**/__tests__"]
 }
