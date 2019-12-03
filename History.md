@@ -1,3 +1,12 @@
+## [0.6.5](https://github.com/zakodium/adonis-apollo/compare/v0.6.4...v0.6.5) (2019-12-03)
+
+
+### Bug Fixes
+
+* really correctly read templates ([f9a8b97](https://github.com/zakodium/adonis-apollo/commit/f9a8b973c3240376140c7de8d88056ca7cbb597f))
+
+
+
 ## [0.6.4](https://github.com/zakodium/adonis-apollo/compare/v0.6.3...v0.6.4) (2019-12-03)
 
 
