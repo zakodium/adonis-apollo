@@ -1,3 +1,12 @@
+## [0.6.3](https://github.com/zakodium/adonis-apollo/compare/v0.6.2...v0.6.3) (2019-12-03)
+
+
+### Bug Fixes
+
+* make paths always work in dev ([d11e97a](https://github.com/zakodium/adonis-apollo/commit/d11e97a499c2097bf5ced0093b83149ec07ee029))
+
+
+
 ## [0.6.2](https://github.com/zakodium/adonis-apollo/compare/v0.6.1...v0.6.2) (2019-12-02)
 
 
