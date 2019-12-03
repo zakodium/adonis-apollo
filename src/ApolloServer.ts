@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { join } from 'path';
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import {
@@ -39,7 +39,7 @@ export default class ApolloServer extends ApolloServerBase {
     return true;
   }
 
-  public constructor(config: ApolloConfig) {
+  public constructor(appRoot: string, config: ApolloConfig) {
     const {
       path = '/graphql',
       resolvers = 'app/Resolvers',
@@ -47,8 +47,8 @@ export default class ApolloServer extends ApolloServerBase {
       apolloServer = {},
       executableSchema = {},
     } = config;
-    const resolversPath = resolve(resolvers);
-    const schemasPath = resolve(schemas);
+    const resolversPath = join(appRoot, resolvers);
+    const schemasPath = join(appRoot, schemas);
     let { context, ...rest } = apolloServer;
 
     super({
