@@ -1,6 +1,12 @@
 import { join } from 'path';
 
+import {
+  renderPlaygroundPage,
+  RenderPageOptions as PlaygroundRenderPageOptions,
+} from '@apollographql/graphql-playground-html';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
+import { ServerRegistration } from '@ioc:Apollo/Server';
 import {
   ApolloServerBase,
   GraphQLOptions,
@@ -9,12 +15,6 @@ import {
 } from 'apollo-server-core';
 import { makeExecutableSchema } from 'graphql-tools';
 import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
-import {
-  renderPlaygroundPage,
-  RenderPageOptions as PlaygroundRenderPageOptions,
-} from '@apollographql/graphql-playground-html';
-import { ServerRegistration } from '@ioc:Apollo/Server';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
 
 import { graphqlAdonis } from './graphqlAdonis';
 
@@ -55,7 +55,7 @@ export default class ApolloServer extends ApolloServerBase {
       schema: makeExecutableSchema({
         ...executableSchema,
         typeDefs: mergeTypes(fileLoader(schemasPath, { recursive: true })),
-        resolvers: mergeResolvers(fileLoader(resolversPath)),
+        resolvers: mergeResolvers(fileLoader<any>(resolversPath)),
       }),
       context: makeContextFunction(context),
       ...rest,

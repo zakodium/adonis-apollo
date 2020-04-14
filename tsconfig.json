@@ -9,7 +9,8 @@
     "strict": true,
     "target": "esnext",
     "types": ["@adonisjs/core"],
-    "strictFunctionTypes": false
+    "strictFunctionTypes": false,
+    "skipLibCheck": true
   },
   "include": ["./src/**/*", "./providers/**/*"],
   "exclude": ["./src/**/__tests__"]
