@@ -56,11 +56,11 @@ export default class ApolloServer extends ApolloServerBase {
     super({
       schema: makeExecutableSchema({
         ...executableSchema,
-        typeDefs: mergeTypeDefs(
-          loadFilesSync(schemasPath, { recursive: true }),
-        ),
+        typeDefs: mergeTypeDefs(loadFilesSync(schemasPath)),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resolvers: mergeResolvers(loadFilesSync<any>(resolversPath)),
+        resolvers: mergeResolvers(
+          loadFilesSync<any>(resolversPath, { recursive: false }),
+        ),
       }),
       context: makeContextFunction(context),
       ...rest,
