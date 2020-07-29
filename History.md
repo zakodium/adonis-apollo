@@ -1,3 +1,12 @@
+## [0.7.1](https://github.com/zakodium/adonis-apollo/compare/v0.7.0...v0.7.1) (2020-07-29)
+
+
+### Bug Fixes
+
+* inverse recursive option of loadFilesSync ([ba76f5a](https://github.com/zakodium/adonis-apollo/commit/ba76f5a86ec44965df9ef3e636e9bbbdfeeec557))
+
+
+
 # [0.7.0](https://github.com/zakodium/adonis-apollo/compare/v0.6.6...v0.7.0) (2020-07-29)
 
 
