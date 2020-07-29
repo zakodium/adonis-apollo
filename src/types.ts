@@ -1,9 +1,8 @@
 declare module '@ioc:Apollo/Server' {
   import { Readable } from 'stream';
   import { ApolloServerBase } from 'apollo-server-core';
-  import { RouterContract, RouteHandlerNode } from '@ioc:Adonis/Core/Route';
-  import { MiddlewareNode } from '@ioc:Adonis/Core/Middleware';
-  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
+  import { MiddlewareHandler } from '@ioc:Adonis/Core/Middleware';
 
   export interface IUpload {
     filename: string;
@@ -19,9 +18,9 @@ declare module '@ioc:Apollo/Server' {
 
   class ApolloServer extends ApolloServerBase {
     public applyMiddleware(config: ServerRegistration): void;
-    public getGraphqlHandler(): RouteHandlerNode;
-    public getPlaygroundHandler(): RouteHandlerNode;
-    public getUploadsMiddleware(): MiddlewareNode;
+    public getGraphqlHandler(): RouteHandler;
+    public getPlaygroundHandler(): RouteHandler;
+    public getUploadsMiddleware(): MiddlewareHandler;
   }
 
   const server: ApolloServer;
@@ -30,7 +29,7 @@ declare module '@ioc:Apollo/Server' {
 
 declare module '@ioc:Apollo/Config' {
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
-  import { IExecutableSchemaDefinition } from 'graphql-tools';
+  import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
   export interface ApolloBaseContext {
@@ -67,7 +66,7 @@ declare module '@ioc:Apollo/Config' {
     };
 
     /**
-     * Additional config passed to the `makeExecutableSchema` function from `graphql-tools`.
+     * Additional config passed to the `makeExecutableSchema` function from `@graphql-tools/schema`.
      */
     executableSchema?: Omit<
       IExecutableSchemaDefinition,

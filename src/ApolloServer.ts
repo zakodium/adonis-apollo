@@ -4,23 +4,25 @@ import {
   renderPlaygroundPage,
   RenderPageOptions as PlaygroundRenderPageOptions,
 } from '@apollographql/graphql-playground-html';
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
-import { ServerRegistration } from '@ioc:Apollo/Server';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
   processFileUploads,
 } from 'apollo-server-core';
-import { makeExecutableSchema } from 'graphql-tools';
-import { fileLoader, mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
+
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
+import { ServerRegistration } from '@ioc:Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 
 function makeContextFunction(
-  context?: (args: ApolloBaseContext) => any,
-): (args: ApolloBaseContext) => any {
+  context?: (args: ApolloBaseContext) => unknown,
+): (args: ApolloBaseContext) => unknown {
   if (typeof context === 'function') {
     return function ctxFn(args: ApolloBaseContext) {
       return context(args);
@@ -54,8 +56,11 @@ export default class ApolloServer extends ApolloServerBase {
     super({
       schema: makeExecutableSchema({
         ...executableSchema,
-        typeDefs: mergeTypes(fileLoader(schemasPath, { recursive: true })),
-        resolvers: mergeResolvers(fileLoader<any>(resolversPath)),
+        typeDefs: mergeTypeDefs(
+          loadFilesSync(schemasPath, { recursive: true }),
+        ),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolvers: mergeResolvers(loadFilesSync<any>(resolversPath)),
       }),
       context: makeContextFunction(context),
       ...rest,

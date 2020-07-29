@@ -1,4 +1,5 @@
 import { IocContract } from '@adonisjs/fold';
+
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { ConfigContract } from '@ioc:Adonis/Core/Config';
 
@@ -19,17 +20,5 @@ export default class ApolloProvider {
       const Config: ConfigContract = this.$container.use('Adonis/Core/Config');
       return new ApolloServer(Application.appRoot, Config.get('apollo', {}));
     });
-  }
-
-  public boot(): void {
-    // All bindings are ready, feel free to use them
-  }
-
-  public shutdown(): void {
-    // Cleanup, since app is going down
-  }
-
-  public ready(): void {
-    // App is ready
   }
 }
