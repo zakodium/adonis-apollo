@@ -1,3 +1,12 @@
+## [0.7.2](https://github.com/zakodium/adonis-apollo/compare/v0.7.1...v0.7.2) (2020-07-31)
+
+
+### Bug Fixes
+
+* pin graphql playground to working version ([d46b18d](https://github.com/zakodium/adonis-apollo/commit/d46b18d01904e648b6371f2b2090e1ba7490088f))
+
+
+
 ## [0.7.1](https://github.com/zakodium/adonis-apollo/compare/v0.7.0...v0.7.1) (2020-07-29)
 
 
