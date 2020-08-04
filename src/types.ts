@@ -3,14 +3,9 @@ declare module '@ioc:Apollo/Server' {
   import { ApolloServerBase } from 'apollo-server-core';
   import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
   import { MiddlewareHandler } from '@ioc:Adonis/Core/Middleware';
+  import { FileUpload } from 'graphql-upload';
 
-  export interface IUpload {
-    filename: string;
-    mimetype: string;
-    encoding: string;
-    createReadStream: () => Readable;
-  }
-  export type Upload = Promise<IUpload> | Promise<IUpload>[];
+  export type Upload = Promise<FileUpload> | Promise<FileUpload>[];
 
   export interface ServerRegistration {
     Route: RouterContract;
