@@ -20,8 +20,6 @@ import { ServerRegistration } from '@ioc:Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 
-console.log('linked adonis apollo');
-
 function makeContextFunction(
   context?: (args: ApolloBaseContext) => unknown,
 ): (args: ApolloBaseContext) => unknown {
