@@ -11,8 +11,8 @@ import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
-  processFileUploads,
 } from 'apollo-server-core';
+import { processRequest, GraphQLUpload } from 'graphql-upload';
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
@@ -58,9 +58,10 @@ export default class ApolloServer extends ApolloServerBase {
         ...executableSchema,
         typeDefs: mergeTypeDefs(loadFilesSync(schemasPath)),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resolvers: mergeResolvers(
-          loadFilesSync<any>(resolversPath, { recursive: false }),
-        ),
+        resolvers: mergeResolvers([
+          ...loadFilesSync<any>(resolversPath, { recursive: false }),
+          { Upload: GraphQLUpload },
+        ]),
       }),
       context: makeContextFunction(context),
       ...rest,
@@ -103,8 +104,7 @@ export default class ApolloServer extends ApolloServerBase {
     return async (ctx: HttpContextContract, next: () => Promise<void>) => {
       if (ctx.request.is(['multipart/form-data'])) {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const processed = await processFileUploads!(
+          const processed = await processRequest(
             ctx.request.request,
             ctx.response.response,
             this.uploadsConfig,
