@@ -1,3 +1,12 @@
+## [0.7.3](https://github.com/zakodium/adonis-apollo/compare/v0.7.2...v0.7.3) (2020-08-04)
+
+
+### Bug Fixes
+
+* update to graphql-upload 11 for compatibility with nodejs 14 ([#3](https://github.com/zakodium/adonis-apollo/issues/3)) ([b94eb70](https://github.com/zakodium/adonis-apollo/commit/b94eb70193e1e2e39120c4a0f55e063558502f69))
+
+
+
 ## [0.7.2](https://github.com/zakodium/adonis-apollo/compare/v0.7.1...v0.7.2) (2020-07-31)
 
 
