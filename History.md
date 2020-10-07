@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/zakodium/adonis-apollo/compare/v0.7.3...v0.8.0) (2020-10-07)
+
+
+### Features
+
+* include resolvers for graphql-scalars scalar types and warn for missing resolvers ([#8](https://github.com/zakodium/adonis-apollo/issues/8)) ([d4fcf15](https://github.com/zakodium/adonis-apollo/commit/d4fcf15a6a868f94744c37527fd74ce924be716d))
+
+
+
 ## [0.7.3](https://github.com/zakodium/adonis-apollo/compare/v0.7.2...v0.7.3) (2020-08-04)
 
 
