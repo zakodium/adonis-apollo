@@ -4,7 +4,14 @@
 [![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
-Apollo GraphQL server for AdonisJs.
+Apollo GraphQL server for AdonisJS.
+
+| :warning: This module is unstable and in active development. Use at your own risk. |
+| --- |
+
+## Prerequisites
+
+This provider requires Adonis v5 preview and won't work with Adonis v4.
 
 ## Installation
 
