@@ -30,6 +30,17 @@ ApolloServer.applyMiddleware({ Route });
 
 TODO
 
+### Scalars
+
+All the resolvers from `graphql-scalars` are installed automatically.
+
+To enable any of the scalar types documented in [`graphql-scalars@1.4.0`](https://github.com/Urigo/graphql-scalars/tree/v1.4.0),
+for example `DateTime`, just add a scalar line to your schema:
+
+```graphql
+scalar DateTime
+```
+
 ### Uploads
 
 To enable support for GraphQL uploads:

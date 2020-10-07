@@ -7,11 +7,10 @@
     "outDir": "./lib",
     "sourceMap": true,
     "strict": true,
-    "target": "esnext",
-    "types": ["@adonisjs/core"],
+    "target": "es2019",
+    "types": ["@adonisjs/core", "@types/jest"],
     "strictFunctionTypes": false,
     "skipLibCheck": true
   },
   "include": ["./src/**/*", "./providers/**/*"],
-  "exclude": ["./src/**/__tests__"]
 }
