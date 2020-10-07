@@ -57,8 +57,8 @@ export default class ApolloServer extends ApolloServerBase {
       schema: makeExecutableSchema({
         ...executableSchema,
         typeDefs: mergeTypeDefs(loadFilesSync(schemasPath)),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolvers: mergeResolvers([
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ...loadFilesSync<any>(resolversPath, { recursive: false }),
           { Upload: GraphQLUpload },
         ]),
@@ -110,19 +110,18 @@ export default class ApolloServer extends ApolloServerBase {
             this.uploadsConfig,
           );
           ctx.request.setInitialBody(processed);
-          return next();
         } catch (error) {
           if (error.status && error.expose) {
             ctx.response.status(error.status);
           }
+          // eslint-disable-next-line @typescript-eslint/no-throw-literal
           throw formatApolloErrors([error], {
             formatter: this.requestOptions.formatError,
             debug: this.requestOptions.debug,
           });
         }
-      } else {
-        return next();
       }
+      return next();
     };
   }
 }

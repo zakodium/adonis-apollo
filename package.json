@@ -59,28 +59,24 @@
     "tabWidth": 2,
     "trailingComma": "all"
   },
-  "peerDependencies": {
-    "@adonisjs/core": "^5.0.0-preview-rc-1.11"
-  },
   "devDependencies": {
-    "@adonisjs/core": "^5.0.0-preview-rc-1.11",
+    "@adonisjs/core": "^5.0.0-preview-rc-1.12",
     "@adonisjs/fold": "^6.3.5",
-    "@types/jest": "^26.0.7",
-    "@types/node-fetch": "^2.5.7",
-    "@zakodium/eslint-config": "^1.0.2",
-    "eslint": "^7.5.0",
-    "jest": "^26.1.0",
-    "prettier": "^2.0.5",
+    "@types/jest": "^26.0.14",
+    "@zakodium/eslint-config": "^2.0.1",
+    "eslint": "^7.10.0",
+    "jest": "^26.5.2",
+    "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.1.4",
-    "typescript": "^3.9.7"
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "@apollographql/graphql-playground-html": "1.6.24",
-    "@graphql-tools/load-files": "^6.0.15",
-    "@graphql-tools/merge": "^6.0.15",
-    "@graphql-tools/schema": "^6.0.15",
-    "apollo-server-core": "^2.16.1",
+    "@graphql-tools/load-files": "^6.2.4",
+    "@graphql-tools/merge": "^6.2.4",
+    "@graphql-tools/schema": "^6.2.4",
+    "apollo-server-core": "^2.18.2",
     "graphql": "^15.3.0",
     "graphql-upload": "^11.0.0"
   }
