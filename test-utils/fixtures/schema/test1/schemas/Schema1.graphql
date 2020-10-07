@@ -1,0 +1,12 @@
+type Query {
+  queryA: String
+  queryB: String
+}
+
+type Mutation {
+  mutationA: String
+  mutationB: String
+}
+
+scalar URL
+scalar Bad

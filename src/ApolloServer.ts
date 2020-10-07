@@ -4,21 +4,22 @@ import {
   renderPlaygroundPage,
   RenderPageOptions as PlaygroundRenderPageOptions,
 } from '@apollographql/graphql-playground-html';
-import { loadFilesSync } from '@graphql-tools/load-files';
-import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
 } from 'apollo-server-core';
-import { processRequest, GraphQLUpload } from 'graphql-upload';
+import { processRequest } from 'graphql-upload';
 
+import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
 import { ServerRegistration } from '@ioc:Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
+import { getTypeDefsAndResolvers, printWarnings } from './schema';
 
 function makeContextFunction(
   context?: (args: ApolloBaseContext) => unknown,
@@ -41,27 +42,34 @@ export default class ApolloServer extends ApolloServerBase {
     return true;
   }
 
-  public constructor(appRoot: string, config: ApolloConfig) {
+  public constructor(
+    application: ApplicationContract,
+    config: ApolloConfig,
+    logger: LoggerContract,
+  ) {
     const {
       path = '/graphql',
-      resolvers = 'app/Resolvers',
-      schemas = 'app/Schemas',
+      schemas: schemasPath = 'app/Schemas',
+      resolvers: resolversPath = 'app/Resolvers',
       apolloServer = {},
       executableSchema = {},
     } = config;
-    const resolversPath = join(appRoot, resolvers);
-    const schemasPath = join(appRoot, schemas);
     let { context, ...rest } = apolloServer;
+
+    const { typeDefs, resolvers, warnings } = getTypeDefsAndResolvers(
+      join(application.appRoot, schemasPath),
+      join(application.appRoot, resolversPath),
+    );
+
+    if (application.inDev) {
+      printWarnings(warnings, logger);
+    }
 
     super({
       schema: makeExecutableSchema({
         ...executableSchema,
-        typeDefs: mergeTypeDefs(loadFilesSync(schemasPath)),
-        resolvers: mergeResolvers([
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ...loadFilesSync<any>(resolversPath, { recursive: false }),
-          { Upload: GraphQLUpload },
-        ]),
+        typeDefs,
+        resolvers,
       }),
       context: makeContextFunction(context),
       ...rest,

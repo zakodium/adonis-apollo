@@ -1,5 +1,4 @@
 declare module '@ioc:Apollo/Server' {
-  import { Readable } from 'stream';
   import { ApolloServerBase } from 'apollo-server-core';
   import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
   import { MiddlewareHandler } from '@ioc:Adonis/Core/Middleware';
