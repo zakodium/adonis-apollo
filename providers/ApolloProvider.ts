@@ -1,22 +1,19 @@
-import { IocContract } from '@adonisjs/fold';
-
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
-import { ConfigContract } from '@ioc:Adonis/Core/Config';
-import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
 import ApolloServer from '../src/ApolloServer';
 
 export default class ApolloProvider {
-  public constructor(protected $container: IocContract) {}
+  public static needsApplication = true;
+
+  public constructor(protected app: ApplicationContract) {}
 
   public register(): void {
-    this.$container.singleton('Apollo/Server', () => {
-      const Application: ApplicationContract = this.$container.use(
-        'Adonis/Core/Application',
+    this.app.container.singleton('Apollo/Server', () => {
+      return new ApolloServer(
+        this.app,
+        this.app.config.get('apollo', {}),
+        this.app.logger,
       );
-      const Config: ConfigContract = this.$container.use('Adonis/Core/Config');
-      const Logger: LoggerContract = this.$container.use('Adonis/Core/Logger');
-      return new ApolloServer(Application, Config.get('apollo', {}), Logger);
     });
   }
 }
