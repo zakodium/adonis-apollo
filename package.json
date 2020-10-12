@@ -60,13 +60,12 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@adonisjs/core": "^5.0.0-preview-rc-1.12",
-    "@adonisjs/fold": "^6.3.5",
+    "@adonisjs/core": "^5.0.2-beta-rc-5",
     "@adonisjs/logger": "^3.0.1",
     "@types/jest": "^26.0.14",
-    "@zakodium/eslint-config": "^2.0.1",
-    "eslint": "^7.10.0",
-    "jest": "^26.5.2",
+    "@zakodium/eslint-config": "^2.1.1",
+    "eslint": "^7.11.0",
+    "jest": "^26.5.3",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.1",
