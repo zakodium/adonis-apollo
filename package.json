@@ -60,25 +60,25 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@adonisjs/core": "^5.0.2-beta-rc-5",
-    "@adonisjs/logger": "^3.0.1",
-    "@types/jest": "^26.0.14",
-    "@zakodium/eslint-config": "^2.1.1",
-    "eslint": "^7.11.0",
-    "jest": "^26.5.3",
+    "@adonisjs/core": "^5.0.4-preview-rc-2",
+    "@adonisjs/logger": "^3.0.3",
+    "@types/jest": "^26.0.15",
+    "@zakodium/eslint-config": "^2.1.4",
+    "eslint": "^7.12.1",
+    "jest": "^26.6.1",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3"
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "@apollographql/graphql-playground-html": "1.6.24",
     "@graphql-tools/load-files": "^6.2.4",
-    "@graphql-tools/merge": "^6.2.4",
-    "@graphql-tools/schema": "^6.2.4",
+    "@graphql-tools/merge": "^6.2.5",
+    "@graphql-tools/schema": "^7.0.0",
     "apollo-server-core": "^2.18.2",
-    "graphql": "^15.3.0",
-    "graphql-scalars": "^1.4.0",
+    "graphql": "^15.4.0",
+    "graphql-scalars": "^1.4.1",
     "graphql-upload": "^11.0.0"
   }
 }
