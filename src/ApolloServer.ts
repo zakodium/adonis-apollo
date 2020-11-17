@@ -1,16 +1,16 @@
 import { resolve } from 'path';
 
-import {
-  renderPlaygroundPage,
-  RenderPageOptions as PlaygroundRenderPageOptions,
-} from '@apollographql/graphql-playground-html';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
-  defaultPlaygroundOptions,
+  createPlaygroundOptions,
 } from 'apollo-server-core';
+import {
+  renderPlaygroundPage,
+  RenderPageOptions,
+} from 'graphql-playground-html';
 import { processRequest } from 'graphql-upload';
 
 import { graphqlAdonis } from './graphqlAdonis';
@@ -81,16 +81,20 @@ export default class ApolloServer extends ApolloServerBase {
 
   public getPlaygroundHandler() {
     return async (ctx: any) => {
-      const playgroundRenderPageOptions: PlaygroundRenderPageOptions = {
+      const playgroundOptions = createPlaygroundOptions({
         endpoint: this.$path,
+        version: '',
         settings: {
-          ...defaultPlaygroundOptions.settings,
           'request.credentials': 'include',
           ...this.$config.playgroundSettings,
         },
-      };
+      }) as RenderPageOptions;
+
+      if (playgroundOptions === undefined) {
+        throw new Error('unreachable');
+      }
       ctx.response.header('Content-Type', 'text/html');
-      return renderPlaygroundPage(playgroundRenderPageOptions);
+      return renderPlaygroundPage(playgroundOptions);
     };
   }
 
