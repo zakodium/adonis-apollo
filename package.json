@@ -72,12 +72,12 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
-    "@apollographql/graphql-playground-html": "1.6.24",
     "@graphql-tools/load-files": "^6.2.4",
     "@graphql-tools/merge": "^6.2.5",
     "@graphql-tools/schema": "^7.0.0",
     "apollo-server-core": "^2.18.2",
     "graphql": "^15.4.0",
+    "graphql-playground-html": "^1.6.29",
     "graphql-scalars": "^1.4.1",
     "graphql-upload": "^11.0.0"
   }
