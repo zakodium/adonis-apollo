@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.9.0...v0.10.0) (2020-11-17)
+
+
+### Features
+
+* update graphql-playground and allow playground settings customization ([#14](https://www.github.com/zakodium/adonis-apollo/issues/14)) ([0fc35d1](https://www.github.com/zakodium/adonis-apollo/commit/0fc35d1a0615c1ad81a7d856cbc40691079c419e))
+
 ## [0.9.0](https://github.com/zakodium/adonis-apollo/compare/v0.8.0...v0.9.0) (2020-10-12)
 
 # [0.8.0](https://github.com/zakodium/adonis-apollo/compare/v0.7.3...v0.8.0) (2020-10-07)
@@ -164,6 +171,3 @@
 ### Features
 
 * implement initial version ([9bcb74c](https://github.com/zakodium/adonis-apollo/commit/9bcb74c))
-
-
-
