@@ -97,7 +97,7 @@ export default class ApolloServer extends ApolloServerBase {
     return async (ctx: HttpContextContract) => {
       const playgroundOptions = createPlaygroundOptions({
         endpoint: this.$path,
-        version: '',
+        version: '^1.7.0',
         settings: {
           'request.credentials': 'include',
           ...this.$config.playgroundSettings,
