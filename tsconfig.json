@@ -8,7 +8,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2019",
-    "types": ["@adonisjs/core", "@types/jest"],
+    "types": ["@types/jest"],
     "strictFunctionTypes": false,
     "skipLibCheck": true
   },
