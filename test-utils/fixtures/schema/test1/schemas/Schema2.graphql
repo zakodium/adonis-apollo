@@ -1,9 +1,0 @@
-type Query {
-  queryC: String
-}
-
-type Mutation {
-  mutationC: String
-}
-
-scalar OtherBad

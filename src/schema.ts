@@ -1,8 +1,6 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
 
-import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-
 import { scalarResolvers } from './scalarResolvers';
 
 interface SchemaWarnings {
@@ -67,31 +65,4 @@ export function getTypeDefsAndResolvers(
     resolvers,
     warnings,
   };
-}
-
-export function printWarnings(
-  warnings: SchemaWarnings,
-  logger: LoggerContract,
-): void {
-  if (warnings.missingQuery.length > 0) {
-    logger.error(
-      `GraphQL Query resolver missing for fields: ${warnings.missingQuery.join(
-        ', ',
-      )}`,
-    );
-  }
-  if (warnings.missingMutation.length > 0) {
-    logger.error(
-      `GraphQL Mutation resolver missing for fields: ${warnings.missingMutation.join(
-        ', ',
-      )}`,
-    );
-  }
-  if (warnings.missingScalars.length > 0) {
-    logger.error(
-      `GraphQL scalar types defined in schema but not in resolvers: ${warnings.missingScalars.join(
-        ', ',
-      )}`,
-    );
-  }
 }

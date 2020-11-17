@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { resolve } from 'path';
 
 import {
   renderPlaygroundPage,
@@ -9,17 +9,13 @@ import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
+  defaultPlaygroundOptions,
 } from 'apollo-server-core';
 import { processRequest } from 'graphql-upload';
 
-import { ApplicationContract } from '@ioc:Adonis/Core/Application';
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
-import { ServerRegistration } from '@ioc:Apollo/Server';
-
 import { graphqlAdonis } from './graphqlAdonis';
-import { getTypeDefsAndResolvers, printWarnings } from './schema';
+import { getTypeDefsAndResolvers } from './schema';
+import { ApolloBaseContext, ApolloConfig } from './types';
 
 function makeContextFunction(
   context?: (args: ApolloBaseContext) => unknown,
@@ -37,16 +33,13 @@ function makeContextFunction(
 
 export default class ApolloServer extends ApolloServerBase {
   private $path: string;
+  private $config: ApolloConfig;
 
   protected supportsUploads(): boolean {
     return true;
   }
 
-  public constructor(
-    application: ApplicationContract,
-    config: ApolloConfig,
-    logger: LoggerContract,
-  ) {
+  public constructor(config: ApolloConfig) {
     const {
       path = '/graphql',
       schemas: schemasPath = 'app/Schemas',
@@ -56,14 +49,10 @@ export default class ApolloServer extends ApolloServerBase {
     } = config;
     let { context, ...rest } = apolloServer;
 
-    const { typeDefs, resolvers, warnings } = getTypeDefsAndResolvers(
-      join(application.appRoot, schemasPath),
-      join(application.appRoot, resolversPath),
+    const { typeDefs, resolvers } = getTypeDefsAndResolvers(
+      resolve(schemasPath),
+      resolve(resolversPath),
     );
-
-    if (application.inDev) {
-      printWarnings(warnings, logger);
-    }
 
     super({
       schema: makeExecutableSchema({
@@ -75,15 +64,14 @@ export default class ApolloServer extends ApolloServerBase {
       ...rest,
     });
     this.$path = path;
+    this.$config = config;
   }
 
-  private async createGraphQLServerOptions(
-    ctx: HttpContextContract,
-  ): Promise<GraphQLOptions> {
+  private async createGraphQLServerOptions(ctx: any): Promise<GraphQLOptions> {
     return super.graphQLServerOptions({ ctx });
   }
 
-  public applyMiddleware({ Route }: ServerRegistration): void {
+  public applyMiddleware({ Route }: any): void {
     Route.get(this.$path, this.getPlaygroundHandler());
     const postRoute = Route.post(this.$path, this.getGraphqlHandler());
     if (this.uploadsConfig) {
@@ -92,9 +80,14 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public getPlaygroundHandler() {
-    return async (ctx: HttpContextContract) => {
+    return async (ctx: any) => {
       const playgroundRenderPageOptions: PlaygroundRenderPageOptions = {
         endpoint: this.$path,
+        settings: {
+          ...defaultPlaygroundOptions.settings,
+          'request.credentials': 'include',
+          ...this.$config.playgroundSettings,
+        },
       };
       ctx.response.header('Content-Type', 'text/html');
       return renderPlaygroundPage(playgroundRenderPageOptions);
@@ -102,22 +95,22 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public getGraphqlHandler() {
-    return async (ctx: HttpContextContract) => {
+    return async (ctx: any) => {
       const options = await this.createGraphQLServerOptions(ctx);
       return graphqlAdonis(options, ctx);
     };
   }
 
   public getUploadsMiddleware() {
-    return async (ctx: HttpContextContract, next: () => Promise<void>) => {
+    return async (ctx: any, next: () => Promise<void>) => {
       if (ctx.request.is(['multipart/form-data'])) {
         try {
           const processed = await processRequest(
-            ctx.request.request,
-            ctx.response.response,
+            ctx.req,
+            ctx.res,
             this.uploadsConfig,
           );
-          ctx.request.setInitialBody(processed);
+          ctx.request.body = processed;
         } catch (error) {
           if (error.status && error.expose) {
             ctx.response.status(error.status);

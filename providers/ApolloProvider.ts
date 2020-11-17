@@ -1,19 +1,16 @@
-import { ApplicationContract } from '@ioc:Adonis/Core/Application';
+// @ts-ignore
+import { ServiceProvider } from '@adonisjs/fold';
 
 import ApolloServer from '../src/ApolloServer';
 
-export default class ApolloProvider {
-  public static needsApplication = true;
-
-  public constructor(protected app: ApplicationContract) {}
-
+class ApolloProvider extends ServiceProvider {
+  private app: any;
   public register(): void {
-    this.app.container.singleton('Apollo/Server', () => {
-      return new ApolloServer(
-        this.app,
-        this.app.config.get('apollo', {}),
-        this.app.logger,
-      );
+    this.app.singleton('Apollo/Server', () => {
+      const config = this.app.use('Adonis/Src/Config');
+      return new ApolloServer(config.get('apollo', {}));
     });
   }
 }
+
+export = ApolloProvider;

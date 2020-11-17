@@ -34,9 +34,6 @@
     "eslint": "eslint src providers --ext ts --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepublishOnly": "npm run tsc",
-    "test": "npm run test-only && npm run eslint",
-    "test-coverage": "npm run test-only -- --coverage",
-    "test-only": "jest",
     "tsc": "npm run clean && npm run tsc-cjs",
     "tsc-cjs": "tsc --project tsconfig.prod.json"
   },
@@ -60,8 +57,6 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@adonisjs/core": "^5.0.4-preview-rc-2",
-    "@adonisjs/logger": "^3.0.3",
     "@types/jest": "^26.0.15",
     "@zakodium/eslint-config": "^2.1.4",
     "eslint": "^7.12.1",

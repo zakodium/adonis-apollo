@@ -5,18 +5,16 @@ import {
   HttpQueryError,
 } from 'apollo-server-core';
 
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-
 export async function graphqlAdonis(
   options: GraphQLOptions,
-  ctx: HttpContextContract,
+  ctx: any,
 ): Promise<string> {
   try {
     const { graphqlResponse, responseInit } = await runHttpQuery([ctx], {
       method: 'POST',
       options: options,
       query: ctx.request.all(),
-      request: convertNodeHttpToRequest(ctx.request.request),
+      request: convertNodeHttpToRequest(ctx.req),
     });
     if (responseInit.headers) {
       const headerKeys = Object.keys(responseInit.headers);
