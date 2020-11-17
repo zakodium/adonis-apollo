@@ -1,3 +1,4 @@
+
 declare module '@ioc:Apollo/Server' {
   import { ApolloServerBase } from 'apollo-server-core';
   import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
@@ -22,6 +23,7 @@ declare module '@ioc:Apollo/Server' {
 }
 
 declare module '@ioc:Apollo/Config' {
+  import { ISettings as GraphqlPlaygroundSettings} from 'graphql-playground-html/dist/render-playground-page';
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
   import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -66,5 +68,10 @@ declare module '@ioc:Apollo/Config' {
       IExecutableSchemaDefinition,
       'typeDefs' | 'resolvers'
     >;
+
+    /**
+     * Additional config passed to graphql-playground-html
+     */
+    playgroundSettings: Partial<GraphqlPlaygroundSettings>
   }
 }
