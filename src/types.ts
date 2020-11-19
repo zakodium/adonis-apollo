@@ -51,10 +51,10 @@ declare module '@ioc:Apollo/Config' {
     path?: string;
 
     /**
-     * Prefix to add to graphql endpoint if your adonis server is behind a proxy for example
+     * A prefix path or full URL used to construct the graphql endpoint
      * If APP_URL env variable is set, you shouldn't specify this value
      */
-    prefix?: string;
+    appUrl?: string;
 
     /**
      * Additional config passed to the Apollo Server library.

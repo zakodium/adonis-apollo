@@ -78,8 +78,8 @@ export default class ApolloServer extends ApolloServerBase {
     });
     this.$path = path;
     this.$config = config;
-    this.$endpoint = config.prefix
-      ? `${config.prefix.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+    this.$endpoint = config.appUrl
+      ? `${config.appUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
       : path;
   }
 
