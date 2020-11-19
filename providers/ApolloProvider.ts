@@ -9,11 +9,16 @@ export default class ApolloProvider {
 
   public register(): void {
     this.app.container.singleton('Apollo/Server', () => {
-      return new ApolloServer(
-        this.app,
-        this.app.config.get('apollo', {}),
-        this.app.logger,
-      );
+      let apolloConfig = this.app.config.get('apollo', {});
+      const appUrl = this.app.env.get('APP_URL') as string;
+      if (!apolloConfig.prefix && appUrl) {
+        apolloConfig = {
+          ...apolloConfig,
+          prefix: appUrl,
+        };
+      }
+
+      return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
   }
 }

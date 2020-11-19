@@ -38,6 +38,7 @@ function makeContextFunction(
 
 export default class ApolloServer extends ApolloServerBase {
   private $path: string;
+  private $endpoint: string;
   private $config: ApolloConfig;
   protected supportsUploads(): boolean {
     return true;
@@ -77,6 +78,9 @@ export default class ApolloServer extends ApolloServerBase {
     });
     this.$path = path;
     this.$config = config;
+    this.$endpoint = config.prefix
+      ? `${config.prefix.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+      : path;
   }
 
   private async createGraphQLServerOptions(

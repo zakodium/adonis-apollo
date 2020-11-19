@@ -1,4 +1,3 @@
-
 declare module '@ioc:Apollo/Server' {
   import { ApolloServerBase } from 'apollo-server-core';
   import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
@@ -23,7 +22,7 @@ declare module '@ioc:Apollo/Server' {
 }
 
 declare module '@ioc:Apollo/Config' {
-  import { ISettings as GraphqlPlaygroundSettings} from 'graphql-playground-html/dist/render-playground-page';
+  import { ISettings as GraphqlPlaygroundSettings } from 'graphql-playground-html/dist/render-playground-page';
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
   import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -52,6 +51,12 @@ declare module '@ioc:Apollo/Config' {
     path?: string;
 
     /**
+     * Prefix to add to graphql endpoint if your adonis server is behind a proxy for example
+     * If APP_URL env variable is set, you shouldn't specify this value
+     */
+    prefix?: string;
+
+    /**
      * Additional config passed to the Apollo Server library.
      */
     apolloServer?: Omit<
@@ -72,6 +77,6 @@ declare module '@ioc:Apollo/Config' {
     /**
      * Additional config passed to graphql-playground-html
      */
-    playgroundSettings: Partial<GraphqlPlaygroundSettings>
+    playgroundSettings: Partial<GraphqlPlaygroundSettings>;
   }
 }
