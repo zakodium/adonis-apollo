@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.10.0...v0.11.0) (2020-11-19)
+
+
+### Features
+
+* use APP_URL for graphql endpoint and add prefix config option ([#16](https://www.github.com/zakodium/adonis-apollo/issues/16)) ([84ddbe8](https://www.github.com/zakodium/adonis-apollo/commit/84ddbe8276668dad1626d561206ceda349cb9592))
+
 ## [0.10.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.9.0...v0.10.0) (2020-11-17)
 
 
