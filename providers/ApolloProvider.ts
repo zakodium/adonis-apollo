@@ -1,4 +1,5 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
+import { ApolloConfig } from '@ioc:Apollo/Config';
 
 import ApolloServer from '../src/ApolloServer';
 
@@ -9,11 +10,16 @@ export default class ApolloProvider {
 
   public register(): void {
     this.app.container.singleton('Apollo/Server', () => {
-      return new ApolloServer(
-        this.app,
-        this.app.config.get('apollo', {}),
-        this.app.logger,
-      );
+      let apolloConfig = this.app.config.get('apollo', {}) as ApolloConfig;
+      const appUrl = this.app.env.get('APP_URL') as string;
+      if (!apolloConfig.appUrl && appUrl) {
+        apolloConfig = {
+          ...apolloConfig,
+          appUrl,
+        };
+      }
+
+      return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
   }
 }

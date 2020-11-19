@@ -38,6 +38,7 @@ function makeContextFunction(
 
 export default class ApolloServer extends ApolloServerBase {
   private $path: string;
+  private $endpoint: string;
   private $config: ApolloConfig;
   protected supportsUploads(): boolean {
     return true;
@@ -77,6 +78,9 @@ export default class ApolloServer extends ApolloServerBase {
     });
     this.$path = path;
     this.$config = config;
+    this.$endpoint = config.appUrl
+      ? `${config.appUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+      : path;
   }
 
   private async createGraphQLServerOptions(
@@ -96,7 +100,7 @@ export default class ApolloServer extends ApolloServerBase {
   public getPlaygroundHandler() {
     return async (ctx: HttpContextContract) => {
       const playgroundOptions = createPlaygroundOptions({
-        endpoint: this.$path,
+        endpoint: this.$endpoint,
         version: '^1.7.0',
         settings: {
           'request.credentials': 'include',
