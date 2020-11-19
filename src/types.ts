@@ -28,6 +28,12 @@ import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
     path?: string;
 
     /**
+     * Prefix to add to graphql endpoint if your adonis server is behind a proxy for example
+     * If APP_URL env variable is set, you shouldn't specify this value
+     */
+    prefix?: string;
+    
+    /**
      * Additional config passed to the Apollo Server library.
      */
     apolloServer?: Omit<
