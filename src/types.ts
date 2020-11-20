@@ -77,6 +77,6 @@ declare module '@ioc:Apollo/Config' {
     /**
      * Additional config passed to graphql-playground-html
      */
-    playgroundSettings: Partial<GraphqlPlaygroundSettings>;
+    playgroundSettings?: Partial<GraphqlPlaygroundSettings>;
   }
 }
