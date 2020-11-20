@@ -2,6 +2,7 @@
 import { ServiceProvider } from '@adonisjs/fold';
 
 import ApolloServer from '../src/ApolloServer';
+import { ApolloConfig } from '../src/types';
 
 class ApolloProvider extends ServiceProvider {
   private app: any;
@@ -9,12 +10,12 @@ class ApolloProvider extends ServiceProvider {
     this.app.singleton('Apollo/Server', () => {
       const config = this.app.use('Adonis/Src/Config');
       const Env = this.app.use('Env');
-      let apolloConfig = config.get('apollo', {});
+      let apolloConfig = config.get('apollo', {}) as ApolloConfig;
       const appUrl = Env.get('APP_URL');
-      if (!apolloConfig.prefix && appUrl) {
+      if (!apolloConfig.appUrl && appUrl) {
         apolloConfig = {
           ...apolloConfig,
-          prefix: appUrl,
+          appUrl,
         };
       }
       return new ApolloServer(apolloConfig);
