@@ -21,6 +21,16 @@ declare module '@ioc:Apollo/Server' {
   export default server;
 }
 
+declare module '@ioc:Apollo/Errors' {
+  export {
+    AuthenticationError,
+    ForbiddenError,
+    UserInputError,
+    ApolloError,
+    toApolloError,
+  } from 'apollo-server-core';
+}
+
 declare module '@ioc:Apollo/Config' {
   import { ISettings as GraphqlPlaygroundSettings } from 'graphql-playground-html/dist/render-playground-page';
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
@@ -52,7 +62,7 @@ declare module '@ioc:Apollo/Config' {
 
     /**
      * A prefix path or full URL used to construct the graphql endpoint
-     * If APP_URL env variable is set, you shouldn't specify this value
+     * If APP_URL env variable is set, it will be used instead of this value.
      */
     appUrl?: string;
 
