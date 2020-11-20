@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.11.0...v0.12.0) (2020-11-20)
+
+
+### Features
+
+* expose Apollo errors as Apollo/Errors ioc binding ([34719fe](https://www.github.com/zakodium/adonis-apollo/commit/34719fe9e5953d9d958ee34952ee62e60bb76925))
+
+
+### Bug Fixes
+
+* **types:** make playgroundSettings optional ([6c3f678](https://www.github.com/zakodium/adonis-apollo/commit/6c3f6788e7915abb3ac02d6274f206a6a10e8d75))
+
 ## [0.11.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.10.0...v0.11.0) (2020-11-19)
 
 
