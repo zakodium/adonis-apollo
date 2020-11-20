@@ -1,5 +1,12 @@
 // @ts-ignore
 import { ServiceProvider } from '@adonisjs/fold';
+import {
+  AuthenticationError,
+  ForbiddenError,
+  UserInputError,
+  ApolloError,
+  toApolloError,
+} from 'apollo-server-core';
 
 import ApolloServer from '../src/ApolloServer';
 import { ApolloConfig } from '../src/types';
@@ -20,6 +27,14 @@ class ApolloProvider extends ServiceProvider {
       }
       return new ApolloServer(apolloConfig);
     });
+
+    this.app.singleton('Apollo/Errors', () => ({
+      AuthenticationError,
+      ForbiddenError,
+      UserInputError,
+      ApolloError,
+      toApolloError,
+    }));
   }
 }
 
