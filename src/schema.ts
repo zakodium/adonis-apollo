@@ -15,8 +15,16 @@ export function getTypeDefsAndResolvers(
   schemasPaths: string[],
   resolversPaths: string[],
 ) {
-  const typeDefs = mergeTypeDefs(schemasPaths.flatMap(schemasPath => loadFilesSync(schemasPath)));
-  const resolvers = { ...mergeResolvers([...resolversPaths.flatMap(resolversPath => loadFilesSync(resolversPath, { recursive: false }))])}
+  const typeDefs = mergeTypeDefs(
+    schemasPaths.flatMap((schemasPath) => loadFilesSync(schemasPath)),
+  );
+  const resolvers = {
+    ...mergeResolvers([
+      ...resolversPaths.flatMap((resolversPath) =>
+        loadFilesSync(resolversPath, { recursive: false }),
+      ),
+    ]),
+  };
 
   const warnings: SchemaWarnings = {
     missingQuery: [],
