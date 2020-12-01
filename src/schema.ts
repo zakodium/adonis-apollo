@@ -12,13 +12,20 @@ interface SchemaWarnings {
 }
 
 export function getTypeDefsAndResolvers(
-  schemasPath: string,
-  resolversPath: string,
+  schemasPaths: string[],
+  resolversPaths: string[],
 ) {
-  const typeDefs = mergeTypeDefs(loadFilesSync(schemasPath));
+  const typeDefs = mergeTypeDefs(
+    schemasPaths.flatMap((schemasPath) => loadFilesSync(schemasPath)),
+  );
   const resolvers = {
-    ...mergeResolvers([...loadFilesSync(resolversPath, { recursive: false })]),
+    ...mergeResolvers([
+      ...resolversPaths.flatMap((resolversPath) =>
+        loadFilesSync(resolversPath, { recursive: false }),
+      ),
+    ]),
   };
+
   const warnings: SchemaWarnings = {
     missingQuery: [],
     missingMutation: [],

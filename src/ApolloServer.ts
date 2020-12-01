@@ -58,9 +58,18 @@ export default class ApolloServer extends ApolloServerBase {
     } = config;
     let { context, ...rest } = apolloServer;
 
+    const schemasPaths: string[] = Array.isArray(schemasPath)
+      ? schemasPath
+      : [schemasPath];
+    const resolversPaths: string[] = Array.isArray(resolversPath)
+      ? resolversPath
+      : [resolversPath];
+
     const { typeDefs, resolvers, warnings } = getTypeDefsAndResolvers(
-      join(application.appRoot, schemasPath),
-      join(application.appRoot, resolversPath),
+      schemasPaths.map((schemaPath) => join(application.appRoot, schemaPath)),
+      resolversPaths.map((resolverPath) =>
+        join(application.appRoot, resolverPath),
+      ),
     );
 
     if (application.inDev) {

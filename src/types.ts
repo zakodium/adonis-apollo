@@ -46,13 +46,13 @@ declare module '@ioc:Apollo/Config' {
      * Path to the directory containing resolvers
      * @default `'app/Resolvers'`
      */
-    resolvers?: string;
+    resolvers?: string | string[];
 
     /**
      * Path to the directory containing schemas
      * @default `'app/Schemas'`
      */
-    schemas?: string;
+    schemas?: string | string[];
 
     /**
      * Path on which the GraphQL API and playground will be exposed.
