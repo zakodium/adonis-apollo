@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.12.0...v0.13.0) (2020-12-01)
+
+
+### Features
+
+* allow multiple schemas and resolvers folders ([#20](https://www.github.com/zakodium/adonis-apollo/issues/20)) ([b04ec1c](https://www.github.com/zakodium/adonis-apollo/commit/b04ec1c43564ac0450eb216f3ee16d7b6964ec94))
+
 ## [0.12.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.11.0...v0.12.0) (2020-11-20)
 
 
