@@ -28,7 +28,7 @@ Bind the apollo server to your AdonisJs application.
 In `start/routes.ts`:
 
 ```ts
-import ApolloServer from '@ioc:ApolloServer';
+import ApolloServer from '@ioc:Apollo/Server';
 
 ApolloServer.applyMiddleware({ Route });
 ```
