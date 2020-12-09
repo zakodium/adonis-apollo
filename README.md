@@ -20,7 +20,14 @@ npm i adonis-apollo
 node ace invoke adonis-apollo
 ```
 
-- Add `"app/Schemas/*"` to the "copyToBuild" array in `.adonisrc.json`.
+Then add the following to the `"metaFiles"` array in `.adonisrc.json`:
+
+```json
+{
+  "pattern": "app/Schemas/*",
+  "reloadServer": true
+}
+```
 
 ## Usage
 
