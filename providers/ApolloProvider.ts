@@ -12,12 +12,17 @@ import { ApolloConfig } from '@ioc:Apollo/Config';
 import ApolloServer from '../src/ApolloServer';
 
 export default class ApolloProvider {
+  protected loading = false;
   public static needsApplication = true;
-
   public constructor(protected app: ApplicationContract) {}
 
   public register(): void {
     this.app.container.singleton('Apollo/Server', () => {
+      if (this.loading) {
+        throw new Error(
+          'ApolloProvider was called during its initialization. To use this provider in resolvers, use dynamic `import()`.',
+        );
+      }
       let apolloConfig = this.app.config.get('apollo', {}) as ApolloConfig;
       const appUrl = this.app.env.get('APP_URL') as string;
       if (!apolloConfig.appUrl && appUrl) {
@@ -27,6 +32,7 @@ export default class ApolloProvider {
         };
       }
 
+      this.loading = true;
       return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
 
