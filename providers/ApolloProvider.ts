@@ -20,7 +20,7 @@ export default class ApolloProvider {
     this.app.container.singleton('Apollo/Server', () => {
       if (this.loading) {
         throw new Error(
-          'ApolloProvider was called during its initialization. Using this provider in resolvers is not supported.',
+          'ApolloProvider was called during its initialization. To use this provider in resolvers, use dynamic `import()`.',
         );
       }
       let apolloConfig = this.app.config.get('apollo', {}) as ApolloConfig;
