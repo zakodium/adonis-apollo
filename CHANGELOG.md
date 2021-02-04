@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.13.1](https://www.github.com/zakodium/adonis-apollo/compare/v0.13.0...v0.13.1) (2021-02-04)
+
+
+### Bug Fixes
+
+* throw error if provider is initialized while it is alreary loading ([#27](https://www.github.com/zakodium/adonis-apollo/issues/27)) ([6d29b08](https://www.github.com/zakodium/adonis-apollo/commit/6d29b0858aff639bc70db5344ccb4d78f7cabd3f))
+
 ## [0.13.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.12.0...v0.13.0) (2020-12-01)
 
 
