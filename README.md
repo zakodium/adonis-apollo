@@ -20,7 +20,14 @@ npm i adonis-apollo
 node ace invoke adonis-apollo
 ```
 
-- Add `"app/Schemas/*"` to the "copyToBuild" array in `.adonisrc.json`.
+Then add the following to the `"metaFiles"` array in `.adonisrc.json`:
+
+```json
+{
+  "pattern": "app/Schemas/*",
+  "reloadServer": true
+}
+```
 
 ## Usage
 
@@ -28,7 +35,7 @@ Bind the apollo server to your AdonisJs application.
 In `start/routes.ts`:
 
 ```ts
-import ApolloServer from '@ioc:ApolloServer';
+import ApolloServer from '@ioc:Apollo/Server';
 
 ApolloServer.applyMiddleware({ Route });
 ```
