@@ -7,7 +7,7 @@
 Apollo GraphQL server for AdonisJS.
 
 | :warning: This module is unstable and in active development. Use at your own risk. |
-| --- |
+| ---------------------------------------------------------------------------------- |
 
 ## Prerequisites
 
