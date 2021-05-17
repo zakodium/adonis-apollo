@@ -76,8 +76,12 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public applyMiddleware({ Route }: any): void {
-    Route.get(this.$path, this.getPlaygroundHandler());
+    const playgroundPath = `${this.$path}/playground`;
+    Route.get(playgroundPath, this.getPlaygroundHandler());
+
+    Route.get(this.$path, this.getGraphqlHandler());
     const postRoute = Route.post(this.$path, this.getGraphqlHandler());
+
     if (this.uploadsConfig) {
       postRoute.middleware(this.getUploadsMiddleware());
     }
@@ -110,7 +114,7 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public getUploadsMiddleware() {
-    return async (ctx: any, next: () => Promise<void>) => {
+    return async (ctx: any, next: () => void) => {
       if (ctx.request.is(['multipart/form-data'])) {
         try {
           const processed = await processRequest(
