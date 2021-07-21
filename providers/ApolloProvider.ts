@@ -33,7 +33,9 @@ export default class ApolloProvider {
       }
 
       this.loading = true;
-      return new ApolloServer(this.app, apolloConfig, this.app.logger);
+      const apolloServer = new ApolloServer(this.app, apolloConfig, this.app.logger);
+      void apolloServer.start();
+      return apolloServer;
     });
 
     this.app.container.singleton('Apollo/Errors', () => ({

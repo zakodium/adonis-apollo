@@ -146,7 +146,7 @@ export default class ApolloServer extends ApolloServerBase {
             this.uploadsConfig,
           );
           ctx.request.setInitialBody(processed);
-        } catch (error) {
+        } catch (error: any) {
           if (error.status && error.expose) {
             ctx.response.status(error.status);
           }

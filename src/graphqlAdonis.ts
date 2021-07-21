@@ -1,8 +1,8 @@
 import {
-  GraphQLOptions,
   runHttpQuery,
-  convertNodeHttpToRequest,
+  GraphQLOptions,
   HttpQueryError,
+  convertNodeHttpToRequest,
 } from 'apollo-server-core';
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -25,7 +25,7 @@ export async function graphqlAdonis(
       }
     }
     return graphqlResponse;
-  } catch (error) {
+  } catch (error: any) {
     if (error.name !== 'HttpQueryError') {
       throw error;
     }
