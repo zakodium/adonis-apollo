@@ -2,16 +2,16 @@ import { join } from 'path';
 
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
-  ApolloServerBase,
   GraphQLOptions,
+  ApolloServerBase,
   formatApolloErrors,
-  createPlaygroundOptions,
 } from 'apollo-server-core';
 import {
-  renderPlaygroundPage,
   RenderPageOptions,
+  renderPlaygroundPage,
 } from 'graphql-playground-html';
-import { processRequest } from 'graphql-upload';
+import { ISettings } from 'graphql-playground-html/dist/render-playground-page';
+import { processRequest, UploadOptions } from 'graphql-upload';
 
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -20,6 +20,7 @@ import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
 import { ServerRegistration } from '@ioc:Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
+import { createPlaygroundOptions } from './playground';
 import { getTypeDefsAndResolvers, printWarnings } from './schema';
 
 function makeContextFunction(
@@ -40,6 +41,7 @@ export default class ApolloServer extends ApolloServerBase {
   private $path: string;
   private $endpoint: string;
   private $config: ApolloConfig;
+  private $uploadsConfig?: UploadOptions;
   protected supportsUploads(): boolean {
     return true;
   }
@@ -50,12 +52,14 @@ export default class ApolloServer extends ApolloServerBase {
     logger: LoggerContract,
   ) {
     const {
+      uploads,
       path = '/graphql',
       schemas: schemasPath = 'app/Schemas',
       resolvers: resolversPath = 'app/Resolvers',
       apolloServer = {},
       executableSchema = {},
     } = config;
+
     let { context, ...rest } = apolloServer;
 
     const schemasPaths: string[] = Array.isArray(schemasPath)
@@ -75,7 +79,6 @@ export default class ApolloServer extends ApolloServerBase {
     if (application.inDev) {
       printWarnings(warnings, logger);
     }
-
     super({
       schema: makeExecutableSchema({
         ...executableSchema,
@@ -85,9 +88,13 @@ export default class ApolloServer extends ApolloServerBase {
       context: makeContextFunction(context),
       ...rest,
     });
+
     this.$path = path;
     this.$config = config;
+    this.$uploadsConfig = uploads;
+
     this.$endpoint = config.appUrl
+
       ? `${config.appUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
       : path;
   }
@@ -105,20 +112,19 @@ export default class ApolloServer extends ApolloServerBase {
     Route.get(this.$path, this.getGraphqlHandler());
     const postRoute = Route.post(this.$path, this.getGraphqlHandler());
 
-    if (this.uploadsConfig) {
-      postRoute.middleware(this.getUploadsMiddleware());
-    }
+    postRoute.middleware(this.getUploadsMiddleware());
   }
 
   public getPlaygroundHandler() {
     return async (ctx: HttpContextContract) => {
+
       const playgroundOptions = createPlaygroundOptions({
         endpoint: this.$endpoint,
         version: '^1.7.0',
         settings: {
           'request.credentials': 'include',
           ...this.$config.playgroundSettings,
-        },
+        } as ISettings,
       }) as RenderPageOptions;
 
       if (playgroundOptions === undefined) {
@@ -143,7 +149,7 @@ export default class ApolloServer extends ApolloServerBase {
           const processed = await processRequest(
             ctx.request.request,
             ctx.response.response,
-            this.uploadsConfig,
+            this.$uploadsConfig,
           );
           ctx.request.setInitialBody(processed);
         } catch (error) {

@@ -1,8 +1,8 @@
 import {
-  GraphQLOptions,
   runHttpQuery,
-  convertNodeHttpToRequest,
+  GraphQLOptions,
   HttpQueryError,
+  convertNodeHttpToRequest,
 } from 'apollo-server-core';
 
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';

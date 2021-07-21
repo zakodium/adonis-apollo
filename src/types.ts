@@ -36,6 +36,7 @@ declare module '@ioc:Apollo/Config' {
   import { Config as ApolloCoreConfig } from 'apollo-server-core';
   import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import { UploadOptions } from 'graphql-upload';
 
   export interface ApolloBaseContext {
     ctx: HttpContextContract;
@@ -65,6 +66,12 @@ declare module '@ioc:Apollo/Config' {
      * If APP_URL env variable is set, it will be used instead of this value.
      */
     appUrl?: string;
+
+    /**
+     * Options for GraphQL Upload
+     *
+     */
+    uploads?: UploadOptions;
 
     /**
      * Additional config passed to the Apollo Server library.

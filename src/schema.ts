@@ -5,6 +5,7 @@ import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
 import { scalarResolvers } from './scalarResolvers';
 
+
 interface SchemaWarnings {
   missingQuery: string[];
   missingMutation: string[];
@@ -51,7 +52,7 @@ export function getTypeDefsAndResolvers(
         // Warn about missing Query resolvers.
         const queryResolvers = resolvers.Query || {};
         for (const queryField of definition.fields) {
-          const queryName = queryField.name.value;
+          const queryName = queryField.name.value as keyof typeof queryResolvers;
           if (!queryResolvers[queryName]) {
             warnings.missingQuery.push(queryName);
           }
@@ -60,7 +61,7 @@ export function getTypeDefsAndResolvers(
         // Warn about missing Mutation resolvers.
         const mutationResolvers = resolvers.Mutation || {};
         for (const mutationField of definition.fields) {
-          const mutationName = mutationField.name.value;
+          const mutationName = mutationField.name.value as keyof typeof mutationResolvers;
           if (!mutationResolvers[mutationName]) {
             warnings.missingMutation.push(mutationName);
           }
