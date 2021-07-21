@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.14.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.13.1...v0.14.0) (2021-05-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* The playground is now available on /graphql/playground instead of /graphql
+
+### Features
+
+* allow GET requests for graphql route ([#29](https://www.github.com/zakodium/adonis-apollo/issues/29)) ([691928a](https://www.github.com/zakodium/adonis-apollo/commit/691928ace19e6631587026785627f12f51c4216f))
+
 ### [0.13.1](https://www.github.com/zakodium/adonis-apollo/compare/v0.13.0...v0.13.1) (2021-02-04)
 
 

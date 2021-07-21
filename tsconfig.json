@@ -12,5 +12,5 @@
     "strictFunctionTypes": false,
     "skipLibCheck": true
   },
-  "include": ["./src/**/*", "./providers/**/*"],
+  "include": ["./src/**/*", "./providers/**/*"]
 }

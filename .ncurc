@@ -1,5 +1,0 @@
-{
-  "reject": [
-    "@apollographql/graphql-playground-html"
-  ]
-}
