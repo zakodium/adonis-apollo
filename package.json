@@ -6,6 +6,7 @@
   "types": "./lib/src/types.d.ts",
   "files": [
     "lib",
+    "src",
     "templates"
   ],
   "keywords": [
@@ -31,14 +32,14 @@
   },
   "scripts": {
     "clean": "rimraf lib",
+    "check-types": "tsc --noEmit",
     "eslint": "eslint src providers --ext ts --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepack": "npm run tsc",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "test": "npm run test-only && npm run eslint && npm run prettier",
-    "test-coverage": "npm run test-only -- --coverage",
-    "test-only": "jest",
+    "test": "npm run test-only && npm run eslint && npm run prettier && npm run check-types",
+    "test-only": "jest --coverage",
     "tsc": "npm run clean && npm run tsc-cjs",
     "tsc-cjs": "tsc --project tsconfig.prod.json"
   },
