@@ -52,7 +52,8 @@ export function getTypeDefsAndResolvers(
         // Warn about missing Query resolvers.
         const queryResolvers = resolvers.Query || {};
         for (const queryField of definition.fields) {
-          const queryName = queryField.name.value as keyof typeof queryResolvers;
+          const queryName = queryField.name.value;
+          // @ts-expect-error Using index signature for validation.
           if (!queryResolvers[queryName]) {
             warnings.missingQuery.push(queryName);
           }
@@ -61,7 +62,8 @@ export function getTypeDefsAndResolvers(
         // Warn about missing Mutation resolvers.
         const mutationResolvers = resolvers.Mutation || {};
         for (const mutationField of definition.fields) {
-          const mutationName = mutationField.name.value as keyof typeof mutationResolvers;
+          const mutationName = mutationField.name.value;
+          // @ts-expect-error Using index signature for validation.
           if (!mutationResolvers[mutationName]) {
             warnings.missingMutation.push(mutationName);
           }
