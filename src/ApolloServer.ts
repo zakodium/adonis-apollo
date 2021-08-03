@@ -16,8 +16,11 @@ import { processRequest, UploadOptions } from 'graphql-upload';
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
-import { ServerRegistration } from '@ioc:Apollo/Server';
+import {
+  ApolloConfig,
+  ApolloBaseContext,
+  ServerRegistration,
+} from '@ioc:Zakodium/Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 import { createPlaygroundOptions } from './playground';
@@ -94,7 +97,6 @@ export default class ApolloServer extends ApolloServerBase {
     this.$uploadsConfig = uploads;
 
     this.$endpoint = config.appUrl
-
       ? `${config.appUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
       : path;
   }
@@ -106,8 +108,12 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public applyMiddleware({ Route }: ServerRegistration): void {
+    const landingPagePath = `${this.$path}/studio`;
     const playgroundPath = `${this.$path}/playground`;
+
+    Route.post(landingPagePath, this.getGraphqlHandler());
     Route.get(playgroundPath, this.getPlaygroundHandler());
+    Route.get(landingPagePath, this.getLandingPageHandler());
 
     Route.get(this.$path, this.getGraphqlHandler());
     const postRoute = Route.post(this.$path, this.getGraphqlHandler());
@@ -115,9 +121,16 @@ export default class ApolloServer extends ApolloServerBase {
     postRoute.middleware(this.getUploadsMiddleware());
   }
 
+  public getLandingPageHandler() {
+    return async (ctx: HttpContextContract) => {
+      const landingPage = this.getLandingPage();
+      ctx.response.header('Content-Type', 'text/html');
+      return landingPage?.html;
+    };
+  }
+
   public getPlaygroundHandler() {
     return async (ctx: HttpContextContract) => {
-
       const playgroundOptions = createPlaygroundOptions({
         endpoint: this.$endpoint,
         version: '^1.7.0',

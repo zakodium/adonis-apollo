@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./lib",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "strict": true,
-    "target": "es2019",
+    "lib": ["ES2020"],
+    "target": "es2020",
     "types": ["@adonisjs/core", "@types/jest"],
     "strictFunctionTypes": false,
     "skipLibCheck": true
   },
-  "include": ["./src/**/*", "./providers/**/*"]
+  "include": ["./adonis-typings/**/*", "./src/**/*", "./providers/**/*"]
 }

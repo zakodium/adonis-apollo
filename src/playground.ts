@@ -20,7 +20,7 @@ const playgroundVersion = '1.7.39';
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
     ? RecursivePartial<U>[]
-    : T[P] extends (Record<string, unknown> | undefined)
+    : T[P] extends Record<string, unknown> | undefined
     ? RecursivePartial<T[P]>
     : T[P];
 };
@@ -48,31 +48,37 @@ export const defaultPlaygroundOptions = {
 };
 
 export interface ISettings {
-    'request.globalHeaders': {
-        [key: string]: string;
-    };
+  'request.globalHeaders': {
+    [key: string]: string;
+  };
 }
 
 export function createPlaygroundOptions(
   playground?: PlaygroundRenderPageOptions | boolean,
 ): PlaygroundRenderPageOptions | undefined {
   const isDev = process.env.NODE_ENV !== 'production';
-  const enabled: boolean = typeof playground !== 'undefined' ? !!playground : isDev;
+  const enabled: boolean =
+    typeof playground !== 'undefined' ? !!playground : isDev;
 
   if (!enabled) {
     return undefined;
   }
 
-  const playgroundOverrides = typeof playground === 'boolean' ? {} : playground || {};
-  const hasSettings = Object.prototype.hasOwnProperty.call(playgroundOverrides, 'settings');
+  const playgroundOverrides =
+    typeof playground === 'boolean' ? {} : playground || {};
+  const hasSettings = Object.prototype.hasOwnProperty.call(
+    playgroundOverrides,
+    'settings',
+  );
 
-  const settingsOverrides = hasSettings ? {
-      settings: {
-        ...defaultPlaygroundOptions.settings,
-        ...playgroundOverrides.settings,
-      },
-    }
-  : { settings: undefined };
+  const settingsOverrides = hasSettings
+    ? {
+        settings: {
+          ...defaultPlaygroundOptions.settings,
+          ...playgroundOverrides.settings,
+        },
+      }
+    : { settings: undefined };
 
   const playgroundOptions = {
     ...defaultPlaygroundOptions,

@@ -1,3 +1,4 @@
-lib
-CHANGELOG.md
-coverage
+/node_modules
+/lib
+/CHANGELOG.md
+/coverage

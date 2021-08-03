@@ -1,10 +1,28 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import {
+  IUnionTypeResolver,
+  IScalarTypeResolver,
+  IEnumTypeResolver,
+  IInputObjectTypeResolver,
+  IObjectTypeResolver,
+  IInterfaceTypeResolver,
+} from '@graphql-tools/utils';
+import { DocumentNode } from 'graphql';
 
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
 import { scalarResolvers } from './scalarResolvers';
 
+interface Resolver {
+  [x: string]:
+    | IUnionTypeResolver
+    | IScalarTypeResolver
+    | IEnumTypeResolver
+    | IInputObjectTypeResolver
+    | IObjectTypeResolver
+    | IInterfaceTypeResolver;
+}
 
 interface SchemaWarnings {
   missingQuery: string[];
@@ -15,7 +33,11 @@ interface SchemaWarnings {
 export function getTypeDefsAndResolvers(
   schemasPaths: string[],
   resolversPaths: string[],
-) {
+): {
+  resolvers: Resolver;
+  typeDefs: DocumentNode;
+  warnings: SchemaWarnings;
+} {
   const typeDefs = mergeTypeDefs(
     schemasPaths.flatMap((schemasPath) => loadFilesSync(schemasPath)),
   );
