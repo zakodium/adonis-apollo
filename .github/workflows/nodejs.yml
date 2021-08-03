@@ -24,7 +24,7 @@ jobs:
       - name: Run Prettier
         run: npm run prettier
       - name: Check types
-        run: npm run check-type
+        run: npm run check-types
   test:
     runs-on: ubuntu-latest
     strategy:
