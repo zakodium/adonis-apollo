@@ -1,8 +1,18 @@
-declare module '@ioc:Apollo/Server' {
-  import { ApolloServerBase } from 'apollo-server-core';
-  import { RouterContract, RouteHandler } from '@ioc:Adonis/Core/Route';
-  import { MiddlewareHandler } from '@ioc:Adonis/Core/Middleware';
+declare module '@ioc:Zakodium/Apollo/Server' {
+  import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
+  import {
+    ApolloServerBase,
+    Config as ApolloCoreConfig,
+  } from 'apollo-server-core';
+  import { ISettings as GraphqlPlaygroundSettings } from 'graphql-playground-html/dist/render-playground-page';
   import { FileUpload } from 'graphql-upload';
+
+  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import {
+    RouterContract,
+    RouteHandler,
+    RouteMiddlewareHandler,
+  } from '@ioc:Adonis/Core/Route';
 
   export type Upload = Promise<FileUpload> | Promise<FileUpload>[];
 
@@ -14,34 +24,17 @@ declare module '@ioc:Apollo/Server' {
     public applyMiddleware(config: ServerRegistration): void;
     public getGraphqlHandler(): RouteHandler;
     public getPlaygroundHandler(): RouteHandler;
-    public getUploadsMiddleware(): MiddlewareHandler;
+    public getUploadsMiddleware(): RouteMiddlewareHandler;
   }
 
   const server: ApolloServer;
   export default server;
-}
-
-declare module '@ioc:Apollo/Errors' {
-  export {
-    AuthenticationError,
-    ForbiddenError,
-    UserInputError,
-    ApolloError,
-    toApolloError,
-  } from 'apollo-server-core';
-}
-
-declare module '@ioc:Apollo/Config' {
-  import { ISettings as GraphqlPlaygroundSettings } from 'graphql-playground-html/dist/render-playground-page';
-  import { Config as ApolloCoreConfig } from 'apollo-server-core';
-  import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
-  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
   export interface ApolloBaseContext {
     ctx: HttpContextContract;
   }
 
-  export interface ApolloConfig {
+  export interface ApolloConfig<ContextType = unknown> {
     /**
      * Path to the directory containing resolvers
      * @default `'app/Resolvers'`
@@ -73,7 +66,7 @@ declare module '@ioc:Apollo/Config' {
       ApolloCoreConfig,
       'schema' | 'resolvers' | 'typeDefs' | 'context'
     > & {
-      context?: (arg: ApolloBaseContext) => any;
+      context?: (arg: ApolloBaseContext) => ContextType;
     };
 
     /**

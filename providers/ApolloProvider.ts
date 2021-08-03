@@ -7,7 +7,7 @@ import {
 } from 'apollo-server-core';
 
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
-import { ApolloConfig } from '@ioc:Apollo/Config';
+import { ApolloConfig } from '@ioc:Zakodium/Apollo/Server';
 
 import ApolloServer from '../src/ApolloServer';
 
@@ -17,7 +17,7 @@ export default class ApolloProvider {
   public constructor(protected app: ApplicationContract) {}
 
   public register(): void {
-    this.app.container.singleton('Apollo/Server', () => {
+    this.app.container.singleton('Zakodium/Apollo/Server', () => {
       if (this.loading) {
         throw new Error(
           'ApolloProvider was called during its initialization. To use this provider in resolvers, use dynamic `import()`.',
@@ -33,10 +33,12 @@ export default class ApolloProvider {
       }
 
       this.loading = true;
-      return new ApolloServer(this.app, apolloConfig, this.app.logger);
+      return {
+        default: new ApolloServer(this.app, apolloConfig, this.app.logger),
+      };
     });
 
-    this.app.container.singleton('Apollo/Errors', () => ({
+    this.app.container.singleton('Zakodium/Apollo/Errors', () => ({
       AuthenticationError,
       ForbiddenError,
       UserInputError,

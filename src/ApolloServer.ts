@@ -16,8 +16,11 @@ import { processRequest } from 'graphql-upload';
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Apollo/Config';
-import { ServerRegistration } from '@ioc:Apollo/Server';
+import {
+  ApolloConfig,
+  ApolloBaseContext,
+  ServerRegistration,
+} from '@ioc:Zakodium/Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 import { getTypeDefsAndResolvers, printWarnings } from './schema';

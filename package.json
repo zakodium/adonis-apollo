@@ -3,7 +3,7 @@
   "version": "0.14.0",
   "description": "Apollo GraphQL server for AdonisJs",
   "main": "./lib/providers/ApolloProvider.js",
-  "types": "./lib/src/types.d.ts",
+  "types": "./lib/adonis-typings/index.d.ts",
   "files": [
     "lib",
     "src",
@@ -21,9 +21,7 @@
   "adonisjs": {
     "templates": {
       "basePath": "./templates",
-      "config": [
-        "apollo.txt"
-      ]
+      "config": "apollo.txt"
     },
     "types": "adonis-apollo",
     "providers": [
@@ -33,7 +31,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "check-types": "tsc --noEmit",
-    "eslint": "eslint src providers --ext ts --cache",
+    "eslint": "eslint . --cache",
     "eslint-fix": "npm run eslint -- --fix",
     "prepack": "npm run tsc",
     "prettier": "prettier --check .",
