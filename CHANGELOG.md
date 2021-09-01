@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.15.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.14.0...v0.15.0) (2021-09-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* applyMiddleware() no longer needs route in its parameters
+* removed getPlaygroundHandler method
+* add enablePlayground and playgroundOptions in config. The Playground is no longer available by default in production.
+* the GraphQL playground is now rendered at the same URL as the API. GET queries to the API are still possible.
+* change organization of IoC bindings
+
+### Features
+
+* add enablePlayground and playgroundOptions in config. The Playground is no longer available by default in production. ([2b07ac0](https://www.github.com/zakodium/adonis-apollo/commit/2b07ac0067b2f7a0ce73983125301d45b82b1020))
+* add enableUploads and uploadOptions in config ([2b07ac0](https://www.github.com/zakodium/adonis-apollo/commit/2b07ac0067b2f7a0ce73983125301d45b82b1020))
+
+
+### Code Refactoring
+
+* applyMiddleware() no longer needs route in its parameters ([2b07ac0](https://www.github.com/zakodium/adonis-apollo/commit/2b07ac0067b2f7a0ce73983125301d45b82b1020))
+* change organization of IoC bindings ([39d9bdd](https://www.github.com/zakodium/adonis-apollo/commit/39d9bdd7e93bd24f224e765eb2f258ee804d7af3))
+* removed getPlaygroundHandler method ([2b07ac0](https://www.github.com/zakodium/adonis-apollo/commit/2b07ac0067b2f7a0ce73983125301d45b82b1020))
+* the GraphQL playground is now rendered at the same URL as the API. GET queries to the API are still possible. ([2b07ac0](https://www.github.com/zakodium/adonis-apollo/commit/2b07ac0067b2f7a0ce73983125301d45b82b1020))
+
 ## [0.14.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.13.1...v0.14.0) (2021-05-17)
 
 
