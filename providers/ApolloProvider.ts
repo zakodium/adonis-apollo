@@ -33,9 +33,7 @@ export default class ApolloProvider {
       }
 
       this.loading = true;
-      return {
-        default: new ApolloServer(this.app, apolloConfig, this.app.logger),
-      };
+      return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
 
     this.app.container.singleton('Zakodium/Apollo/Errors', () => ({
@@ -45,5 +43,13 @@ export default class ApolloProvider {
       ApolloError,
       toApolloError,
     }));
+  }
+
+  public async boot(): Promise<void> {
+    await this.app.container.resolveBinding('Zakodium/Apollo/Server').start();
+  }
+
+  public async shutdown(): Promise<void> {
+    await this.app.container.resolveBinding('Zakodium/Apollo/Server').stop();
   }
 }

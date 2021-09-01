@@ -10,33 +10,33 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 export async function graphqlAdonis(
   options: GraphQLOptions,
   ctx: HttpContextContract,
-): Promise<string> {
+  body: Record<string, unknown>,
+): Promise<void> {
   try {
     const { graphqlResponse, responseInit } = await runHttpQuery([ctx], {
       method: 'POST',
-      options: options,
-      query: ctx.request.all(),
+      options,
+      query: body,
       request: convertNodeHttpToRequest(ctx.request.request),
     });
     if (responseInit.headers) {
-      const headerKeys = Object.keys(responseInit.headers);
-      for (const key of headerKeys) {
-        ctx.response.header(key, responseInit.headers[key]);
+      for (const [name, value] of Object.entries(responseInit.headers)) {
+        ctx.response.header(name, value);
       }
     }
-    return graphqlResponse;
+    ctx.response.status(responseInit.status || 200);
+    return ctx.response.send(graphqlResponse);
   } catch (error) {
-    if (error.name !== 'HttpQueryError') {
+    // TODO: use isHttpQueryError once available.
+    if (!(error instanceof HttpQueryError)) {
       throw error;
     }
-    const err = error as HttpQueryError;
-    if (err.headers) {
-      const headerKeys = Object.keys(err.headers);
-      for (const key of headerKeys) {
-        ctx.response.header(key, err.headers[key]);
+    if (error.headers) {
+      for (const [header, value] of Object.entries(error.headers)) {
+        ctx.response.header(header, value);
       }
     }
-    ctx.response.status(err.statusCode);
-    return err.message;
+    ctx.response.status(error.statusCode);
+    return ctx.response.send(error.message);
   }
 }

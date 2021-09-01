@@ -2,30 +2,23 @@ declare module '@ioc:Zakodium/Apollo/Server' {
   import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import {
     ApolloServerBase,
+    ApolloServerPluginLandingPageGraphQLPlaygroundOptions,
     Config as ApolloCoreConfig,
   } from 'apollo-server-core';
-  import { ISettings as GraphqlPlaygroundSettings } from 'graphql-playground-html/dist/render-playground-page';
-  import { FileUpload } from 'graphql-upload';
+  import { FileUpload, UploadOptions } from 'graphql-upload';
 
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-  import {
-    RouterContract,
-    RouteHandler,
-    RouteMiddlewareHandler,
-  } from '@ioc:Adonis/Core/Route';
+  import { RouteHandler, RouteMiddlewareHandler } from '@ioc:Adonis/Core/Route';
 
   export type Upload = Promise<FileUpload> | Promise<FileUpload>[];
 
-  export interface ServerRegistration {
-    Route: RouterContract;
-  }
-
   class ApolloServer extends ApolloServerBase {
-    public applyMiddleware(config: ServerRegistration): void;
+    public applyMiddleware(): void;
     public getGraphqlHandler(): RouteHandler;
-    public getPlaygroundHandler(): RouteHandler;
     public getUploadsMiddleware(): RouteMiddlewareHandler;
   }
+
+  export type { ApolloServer };
 
   const server: ApolloServer;
   export default server;
@@ -64,10 +57,21 @@ declare module '@ioc:Zakodium/Apollo/Server' {
      */
     apolloServer?: Omit<
       ApolloCoreConfig,
-      'schema' | 'resolvers' | 'typeDefs' | 'context'
+      'schema' | 'resolvers' | 'typeDefs' | 'context' | 'plugins'
     > & {
       context?: (arg: ApolloBaseContext) => ContextType;
     };
+
+    /**
+     * Whether file upload processing is enabled.
+     * @default true
+     */
+    enableUploads?: boolean;
+
+    /**
+     * If file upload is enabled, options passed to `graphql-upload`.
+     */
+    uploadOptions?: UploadOptions;
 
     /**
      * Additional config passed to the `makeExecutableSchema` function from `@graphql-tools/schema`.
@@ -78,8 +82,15 @@ declare module '@ioc:Zakodium/Apollo/Server' {
     >;
 
     /**
-     * Additional config passed to graphql-playground-html
+     * Whether GraphQL Playground is enabled.
+     * If this option is not `true`, the default landing page from Apollo will be rendered instead.
+     * @default true if application is in dev mode.
      */
-    playgroundSettings?: Partial<GraphqlPlaygroundSettings>;
+    enablePlayground?: boolean;
+
+    /**
+     * Additional options used to render the GraphQL Playground.
+     */
+    playgroundOptions?: Partial<ApolloServerPluginLandingPageGraphQLPlaygroundOptions>;
   }
 }

@@ -50,7 +50,12 @@ In `start/routes.ts`:
 ```ts
 import ApolloServer from '@ioc:Zakodium/Apollo/Server';
 
-ApolloServer.applyMiddleware({ Route });
+ApolloServer.applyMiddleware();
+
+// You can also call `applyMiddleware` inside a route group:
+Route.group(() => {
+  ApolloServer.applyMiddleware();
+}).middleware('someMiddleware);
 ```
 
 ## Configuration

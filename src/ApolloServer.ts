@@ -5,22 +5,15 @@ import {
   ApolloServerBase,
   GraphQLOptions,
   formatApolloErrors,
-  createPlaygroundOptions,
+  PluginDefinition,
+  ApolloServerPluginLandingPageGraphQLPlayground,
 } from 'apollo-server-core';
-import {
-  renderPlaygroundPage,
-  RenderPageOptions,
-} from 'graphql-playground-html';
-import { processRequest } from 'graphql-upload';
+import { processRequest, UploadOptions } from 'graphql-upload';
 
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-import {
-  ApolloConfig,
-  ApolloBaseContext,
-  ServerRegistration,
-} from '@ioc:Zakodium/Apollo/Server';
+import { ApolloConfig, ApolloBaseContext } from '@ioc:Zakodium/Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 import { getTypeDefsAndResolvers, printWarnings } from './schema';
@@ -40,12 +33,12 @@ function makeContextFunction(
 }
 
 export default class ApolloServer extends ApolloServerBase {
+  private $app: ApplicationContract;
+
   private $path: string;
-  private $endpoint: string;
-  private $config: ApolloConfig;
-  protected supportsUploads(): boolean {
-    return true;
-  }
+
+  private $enableUploads: boolean;
+  private $uploadOptions?: UploadOptions;
 
   public constructor(
     application: ApplicationContract,
@@ -79,6 +72,16 @@ export default class ApolloServer extends ApolloServerBase {
       printWarnings(warnings, logger);
     }
 
+    const enablePlayground = config.enablePlayground ?? application.inDev;
+    const plugins: PluginDefinition[] = [];
+    if (enablePlayground) {
+      plugins.push(
+        ApolloServerPluginLandingPageGraphQLPlayground(
+          config.playgroundOptions,
+        ),
+      );
+    }
+
     super({
       schema: makeExecutableSchema({
         ...executableSchema,
@@ -86,13 +89,16 @@ export default class ApolloServer extends ApolloServerBase {
         resolvers,
       }),
       context: makeContextFunction(context),
+      plugins,
       ...rest,
     });
+
+    this.$app = application;
+
     this.$path = path;
-    this.$config = config;
-    this.$endpoint = config.appUrl
-      ? `${config.appUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
-      : path;
+
+    this.$enableUploads = config.enableUploads ?? true;
+    this.$uploadOptions = config.uploadOptions;
   }
 
   private async createGraphQLServerOptions(
@@ -101,41 +107,36 @@ export default class ApolloServer extends ApolloServerBase {
     return super.graphQLServerOptions({ ctx });
   }
 
-  public applyMiddleware({ Route }: ServerRegistration): void {
-    const playgroundPath = `${this.$path}/playground`;
-    Route.get(playgroundPath, this.getPlaygroundHandler());
-
+  public applyMiddleware(): void {
+    const Route = this.$app.container.resolveBinding('Adonis/Core/Route');
     Route.get(this.$path, this.getGraphqlHandler());
     const postRoute = Route.post(this.$path, this.getGraphqlHandler());
-
-    if (this.uploadsConfig) {
+    if (this.$enableUploads) {
       postRoute.middleware(this.getUploadsMiddleware());
     }
   }
 
-  public getPlaygroundHandler() {
-    return async (ctx: HttpContextContract) => {
-      const playgroundOptions = createPlaygroundOptions({
-        endpoint: this.$endpoint,
-        version: '^1.7.0',
-        settings: {
-          'request.credentials': 'include',
-          ...this.$config.playgroundSettings,
-        },
-      }) as RenderPageOptions;
-
-      if (playgroundOptions === undefined) {
-        throw new Error('unreachable');
-      }
-      ctx.response.header('Content-Type', 'text/html');
-      return renderPlaygroundPage(playgroundOptions);
-    };
-  }
-
   public getGraphqlHandler() {
+    const landingPage = this.getLandingPage();
+
     return async (ctx: HttpContextContract) => {
+      let body: Record<string, unknown>;
+      if (ctx.request.method() === 'GET') {
+        body = ctx.request.qs();
+        // We cannot use ctx.request.accepts because the Adonis application may
+        // be configured to spoof the Accept header.
+        // Instead, consider that if the request doesn't have a "query" parameter,
+        // it is a direct request, and display the landing page.
+        if (landingPage && !body.query) {
+          ctx.response.header('Content-Type', 'text/html');
+          return landingPage.html;
+        }
+      } else {
+        body = ctx.request.body();
+      }
+
       const options = await this.createGraphQLServerOptions(ctx);
-      return graphqlAdonis(options, ctx);
+      return graphqlAdonis(options, ctx, body);
     };
   }
 
@@ -146,10 +147,10 @@ export default class ApolloServer extends ApolloServerBase {
           const processed = await processRequest(
             ctx.request.request,
             ctx.response.response,
-            this.uploadsConfig,
+            this.$uploadOptions,
           );
           ctx.request.setInitialBody(processed);
-        } catch (error) {
+        } catch (error: any) {
           if (error.status && error.expose) {
             ctx.response.status(error.status);
           }
