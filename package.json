@@ -1,6 +1,6 @@
 {
   "name": "adonis-apollo",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "Apollo GraphQL server for AdonisJs",
   "main": "./lib/providers/ApolloProvider.js",
   "types": "./lib/adonis-typings/index.d.ts",
