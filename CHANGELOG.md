@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.15.0...v0.16.0) (2021-09-02)
+
+
+### Features
+
+* always support all resolvers of the current graphql-scalar version ([30ecf36](https://www.github.com/zakodium/adonis-apollo/commit/30ecf3646dd30f0130f47fd8da451587008ec49c))
+
 ## [0.15.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.14.0...v0.15.0) (2021-09-01)
 
 
