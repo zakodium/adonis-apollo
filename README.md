@@ -66,7 +66,7 @@ TODO
 
 All the resolvers from `graphql-scalars` are installed automatically.
 
-To enable any of the scalar types documented in [`graphql-scalars@1.4.0`](https://github.com/Urigo/graphql-scalars/tree/v1.4.0),
+To enable any of the scalar types documented in [`graphql-scalars`](https://www.graphql-scalars.dev/docs/scalars/big-int/),
 for example `DateTime`, just add a scalar line to your schema:
 
 ```graphql
