@@ -55,7 +55,7 @@ ApolloServer.applyMiddleware();
 // You can also call `applyMiddleware` inside a route group:
 Route.group(() => {
   ApolloServer.applyMiddleware();
-}).middleware('someMiddleware);
+}).middleware('someMiddleware');
 ```
 
 ## Configuration
