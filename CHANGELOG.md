@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.16.0...v0.17.0) (2021-09-26)
+
+
+### Features
+
+* expose FileUpload type ([f7635c0](https://www.github.com/zakodium/adonis-apollo/commit/f7635c0f075e60030f60d7feedc28aa6a6ca8265))
+
 ## [0.16.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.15.0...v0.16.0) (2021-09-02)
 
 
