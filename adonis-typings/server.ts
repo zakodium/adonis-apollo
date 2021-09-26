@@ -1,15 +1,19 @@
 declare module '@ioc:Zakodium/Apollo/Server' {
-  import { IExecutableSchemaDefinition } from '@graphql-tools/schema';
-  import {
+  import type { IExecutableSchemaDefinition } from '@graphql-tools/schema';
+  import type {
     ApolloServerBase,
     ApolloServerPluginLandingPageGraphQLPlaygroundOptions,
     Config as ApolloCoreConfig,
   } from 'apollo-server-core';
-  import { FileUpload, UploadOptions } from 'graphql-upload';
+  import type { FileUpload, UploadOptions } from 'graphql-upload';
 
-  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-  import { RouteHandler, RouteMiddlewareHandler } from '@ioc:Adonis/Core/Route';
+  import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import type {
+    RouteHandler,
+    RouteMiddlewareHandler,
+  } from '@ioc:Adonis/Core/Route';
 
+  export type { FileUpload };
   export type Upload = Promise<FileUpload> | Promise<FileUpload>[];
 
   class ApolloServer extends ApolloServerBase {
