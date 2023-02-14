@@ -1,37 +1,45 @@
 declare module '@ioc:Zakodium/Apollo/Server' {
-  import type { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import type {
-    ApolloServerBase,
-    ApolloServerPluginLandingPageGraphQLPlaygroundOptions,
-    Config as ApolloCoreConfig,
-  } from 'apollo-server-core';
-  import type { FileUpload, UploadOptions } from 'graphql-upload';
+    ApolloServerOptions,
+    BaseContext,
+    // @ts-expect-error Package is compatible with both ESM and CJS.
+  } from '@apollo/server';
+  import type { IExecutableSchemaDefinition } from '@graphql-tools/schema';
+  import type { FileUpload } from 'graphql-upload/Upload.js';
+  import type { UploadOptions } from 'graphql-upload/processRequest.js';
 
-  import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
   import type {
     RouteHandler,
     RouteMiddlewareHandler,
   } from '@ioc:Adonis/Core/Route';
 
-  export type { FileUpload };
-  export type Upload = Promise<FileUpload> | Promise<FileUpload>[];
+  export type Upload = Promise<FileUpload> | Array<Promise<FileUpload>>;
 
-  class ApolloServer extends ApolloServerBase {
+  class ApolloServer {
     public applyMiddleware(): void;
     public getGraphqlHandler(): RouteHandler;
     public getUploadsMiddleware(): RouteMiddlewareHandler;
+    public start(): Promise<void>;
+    public stop(): Promise<void>;
   }
 
   export type { ApolloServer };
+  // @ts-expect-error Package is compatible with both ESM and CJS.
+  export type { BaseContext } from '@apollo/server';
+
+  export interface ContextFnArgs {
+    ctx: HttpContextContract;
+  }
+
+  export type ContextFn<ContextType extends BaseContext = BaseContext> = (
+    args: ContextFnArgs,
+  ) => ContextType | Promise<ContextType>;
 
   const server: ApolloServer;
   export default server;
 
-  export interface ApolloBaseContext {
-    ctx: HttpContextContract;
-  }
-
-  export interface ApolloConfig<ContextType = unknown> {
+  export interface ApolloConfig<ContextType extends BaseContext = BaseContext> {
     /**
      * Path to the directory containing resolvers
      * @default `'app/Resolvers'`
@@ -60,11 +68,11 @@ declare module '@ioc:Zakodium/Apollo/Server' {
      * Additional config passed to the Apollo Server library.
      */
     apolloServer?: Omit<
-      ApolloCoreConfig,
-      'schema' | 'resolvers' | 'typeDefs' | 'context' | 'plugins'
-    > & {
-      context?: (arg: ApolloBaseContext) => ContextType;
-    };
+      ApolloServerOptions<ContextType>,
+      'schema' | 'resolvers' | 'typeDefs' | 'gateway'
+    >;
+
+    context?: ContextFn<ContextType>;
 
     /**
      * Whether file upload processing is enabled.
@@ -84,17 +92,5 @@ declare module '@ioc:Zakodium/Apollo/Server' {
       IExecutableSchemaDefinition,
       'typeDefs' | 'resolvers'
     >;
-
-    /**
-     * Whether GraphQL Playground is enabled.
-     * If this option is not `true`, the default landing page from Apollo will be rendered instead.
-     * @default true if application is in dev mode.
-     */
-    enablePlayground?: boolean;
-
-    /**
-     * Additional options used to render the GraphQL Playground.
-     */
-    playgroundOptions?: Partial<ApolloServerPluginLandingPageGraphQLPlaygroundOptions>;
   }
 }

@@ -1,11 +1,3 @@
-import {
-  AuthenticationError,
-  ForbiddenError,
-  UserInputError,
-  ApolloError,
-  toApolloError,
-} from 'apollo-server-core';
-
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import { ApolloConfig } from '@ioc:Zakodium/Apollo/Server';
 
@@ -35,14 +27,6 @@ export default class ApolloProvider {
       this.loading = true;
       return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
-
-    this.app.container.singleton('Zakodium/Apollo/Errors', () => ({
-      AuthenticationError,
-      ForbiddenError,
-      UserInputError,
-      ApolloError,
-      toApolloError,
-    }));
   }
 
   public async boot(): Promise<void> {

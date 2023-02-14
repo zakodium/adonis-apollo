@@ -58,9 +58,57 @@ Route.group(() => {
 }).middleware('someMiddleware');
 ```
 
+### Troubleshooting
+
+#### Error: Query root type must be provided
+
+Apollo requires a query root type to be defined in your schema.
+To fix this error, create a file `app/Schemas/SomeSchema.graphql` with at least
+a `Query` type.
+
+For example:
+
+```graphql
+type Query {
+  hello: String!
+}
+```
+
+#### BadRequestError: This operation has been blocked as a potential Cross-Site Request Forgery (CSRF)
+
+This error may happen if you try to access the GraphQL endpoint from a browser.
+Make sure `forceContentNegotiationTo` is not unconditionally set to `'application/json'` in `config/app.ts`.
+You can either disable this option or set it to a function that ignores the GraphQL route.
+
 ## Configuration
 
 TODO
+
+### Landing page
+
+To configure the landing page, use the `plugins` option in `config/apollo.ts`:
+
+The default configuration is:
+
+```ts
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
+
+const plugins = [
+  Env.get('NODE_ENV') === 'production'
+    ? ApolloServerPluginLandingPageProductionDefault({
+        footer: false,
+      })
+    : ApolloServerPluginLandingPageLocalDefault({
+        footer: false,
+      }),
+];
+```
+
+See the [Apollo Graphql documentation](https://www.apollographql.com/docs/apollo-server/api/plugin/landing-pages/) to
+learn how to customize or disable the landing page.
 
 ### Scalars
 
