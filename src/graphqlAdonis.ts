@@ -1,4 +1,5 @@
 import type { IncomingHttpHeaders } from 'node:http';
+import { Readable } from 'node:stream';
 
 // @ts-expect-error Package is compatible with both ESM and CJS.
 import { ApolloServer, type BaseContext, HeaderMap } from '@apollo/server';
@@ -37,12 +38,7 @@ export async function graphqlAdonis<
   if (body.kind === 'complete') {
     return ctx.response.send(body.string);
   } else {
-    // TODO: pipe the async iterator to the response
-    let bodyString = '';
-    for await (const chunk of body.asyncIterator) {
-      bodyString += chunk;
-    }
-    return ctx.response.send(bodyString);
+    return ctx.response.stream(Readable.from(body.asyncIterator));
   }
 }
 
