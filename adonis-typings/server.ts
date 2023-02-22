@@ -14,7 +14,7 @@ declare module '@ioc:Zakodium/Apollo/Server' {
     RouteMiddlewareHandler,
   } from '@ioc:Adonis/Core/Route';
 
-  export type Upload = Promise<FileUpload> | Array<Promise<FileUpload>>;
+  export type Upload = Promise<FileUpload>;
 
   class ApolloServer {
     public applyMiddleware(): void;
