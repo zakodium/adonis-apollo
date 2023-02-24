@@ -48,6 +48,8 @@ export default class ApolloServer<
       schemas: schemasPath = 'app/Schemas',
       resolvers: resolversPath = 'app/Resolvers',
       apolloServer = {},
+      apolloProductionLandingPageOptions,
+      apolloLocalLandingPageOptions,
       context = defaultContextFn as ContextFn<ContextType>,
       executableSchema = {},
       enableUploads = false,
@@ -94,10 +96,12 @@ export default class ApolloServer<
           ? // eslint-disable-next-line new-cap
             ApolloServerPluginLandingPageProductionDefault({
               footer: false,
+              ...apolloProductionLandingPageOptions,
             })
           : // eslint-disable-next-line new-cap
             ApolloServerPluginLandingPageLocalDefault({
               footer: false,
+              ...apolloLocalLandingPageOptions,
             }),
       ],
       ...apolloServer,

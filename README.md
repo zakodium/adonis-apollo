@@ -86,7 +86,9 @@ TODO
 
 ### Landing page
 
-To configure the landing page, use the `plugins` option in `config/apollo.ts`:
+To configure the default landing page, you can pass `apolloProductionLandingPageOptions`
+or `apolloLocalLandingPageOptions` to the config. Another possibility is to
+override the `plugins` config in `config/apollo.ts`.
 
 The default configuration is:
 
@@ -100,9 +102,11 @@ const plugins = [
   Env.get('NODE_ENV') === 'production'
     ? ApolloServerPluginLandingPageProductionDefault({
         footer: false,
+        apolloProductionLandingPageOptions,
       })
     : ApolloServerPluginLandingPageLocalDefault({
         footer: false,
+        apolloLocalLandingPageOptions,
       }),
 ];
 ```
