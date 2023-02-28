@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.18.0](https://github.com/zakodium/adonis-apollo/compare/v0.17.0...v0.18.0) (2023-02-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Apollo Server was upgraded to version 4. The `enableUploads` config option is now `false` by default. The default GraphQL context doesn't include the `ctx` property anymore (it is now an empty object). The value is still passed to the context function. The `context` config option should now be passed at the top level instead of the `apolloServer` object. The `enablePlayground` and `playgroundOptions` config options were removed. You can now use Apollo Server plugins to configure the landing page. ApolloError and friends were removed so we also removed the `Zakodium/Apollo/Errors` re-export path. See https://www.apollographql.com/docs/apollo-server/migration/ for all details.
+
+### Code Refactoring
+
+* migrate to Apollo Server v4 ([#41](https://github.com/zakodium/adonis-apollo/issues/41)) ([9c9cd3a](https://github.com/zakodium/adonis-apollo/commit/9c9cd3a358a7a5d9d0e3047df83502b110e07996))
+
 ## [0.17.0](https://www.github.com/zakodium/adonis-apollo/compare/v0.16.0...v0.17.0) (2021-09-26)
 
 
