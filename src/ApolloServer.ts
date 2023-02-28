@@ -1,38 +1,36 @@
-import { join } from 'path';
+import path from 'node:path';
 
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
-  ApolloServerBase,
-  GraphQLOptions,
-  formatApolloErrors,
-  PluginDefinition,
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} from 'apollo-server-core';
-import { processRequest, UploadOptions } from 'graphql-upload';
+  ApolloServer as ApolloServerBase,
+  type BaseContext,
+  // @ts-expect-error Package is compatible with both ESM and CJS.
+} from '@apollo/server';
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+  // @ts-expect-error Package is compatible with both ESM and CJS.
+} from '@apollo/server/plugin/landingPage/default';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import processRequest, {
+  UploadOptions,
+} from 'graphql-upload/processRequest.js';
 
-import { ApplicationContract } from '@ioc:Adonis/Core/Application';
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { LoggerContract } from '@ioc:Adonis/Core/Logger';
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Zakodium/Apollo/Server';
+import type { ApplicationContract } from '@ioc:Adonis/Core/Application';
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import type { LoggerContract } from '@ioc:Adonis/Core/Logger';
+import type { ApolloConfig, ContextFn } from '@ioc:Zakodium/Apollo/Server';
 
 import { graphqlAdonis } from './graphqlAdonis';
 import { getTypeDefsAndResolvers, printWarnings } from './schema';
 
-function makeContextFunction(
-  context?: (args: ApolloBaseContext) => unknown,
-): (args: ApolloBaseContext) => unknown {
-  if (typeof context === 'function') {
-    return function ctxFn(args: ApolloBaseContext) {
-      return context(args);
-    };
-  } else {
-    return function ctxFn(args: ApolloBaseContext) {
-      return args;
-    };
-  }
-}
+const defaultContextFn: ContextFn = () => ({});
 
-export default class ApolloServer extends ApolloServerBase {
+export default class ApolloServer<
+  ContextType extends BaseContext = BaseContext,
+> {
+  private $apolloServer: ApolloServerBase<ContextType>;
+  private $contextFunction: ContextFn<ContextType>;
+
   private $app: ApplicationContract;
 
   private $path: string;
@@ -42,17 +40,30 @@ export default class ApolloServer extends ApolloServerBase {
 
   public constructor(
     application: ApplicationContract,
-    config: ApolloConfig,
+    config: ApolloConfig<ContextType>,
     logger: LoggerContract,
   ) {
     const {
-      path = '/graphql',
+      path: graphQLPath = '/graphql',
       schemas: schemasPath = 'app/Schemas',
       resolvers: resolversPath = 'app/Resolvers',
       apolloServer = {},
+      apolloProductionLandingPageOptions,
+      apolloLocalLandingPageOptions,
+      context = defaultContextFn as ContextFn<ContextType>,
       executableSchema = {},
+      enableUploads = false,
+      uploadOptions,
     } = config;
-    let { context, ...rest } = apolloServer;
+
+    this.$app = application;
+
+    this.$path = graphQLPath;
+
+    this.$enableUploads = enableUploads;
+    this.$uploadOptions = uploadOptions;
+
+    this.$contextFunction = context;
 
     const schemasPaths: string[] = Array.isArray(schemasPath)
       ? schemasPath
@@ -62,9 +73,11 @@ export default class ApolloServer extends ApolloServerBase {
       : [resolversPath];
 
     const { typeDefs, resolvers, warnings } = getTypeDefsAndResolvers(
-      schemasPaths.map((schemaPath) => join(application.appRoot, schemaPath)),
+      schemasPaths.map((schemaPath) =>
+        path.join(application.appRoot, schemaPath),
+      ),
       resolversPaths.map((resolverPath) =>
-        join(application.appRoot, resolverPath),
+        path.join(application.appRoot, resolverPath),
       ),
     );
 
@@ -72,39 +85,27 @@ export default class ApolloServer extends ApolloServerBase {
       printWarnings(warnings, logger);
     }
 
-    const enablePlayground = config.enablePlayground ?? application.inDev;
-    const plugins: PluginDefinition[] = [];
-    if (enablePlayground) {
-      plugins.push(
-        ApolloServerPluginLandingPageGraphQLPlayground(
-          config.playgroundOptions,
-        ),
-      );
-    }
-
-    super({
+    this.$apolloServer = new ApolloServerBase<ContextType>({
       schema: makeExecutableSchema({
         ...executableSchema,
         typeDefs,
         resolvers,
       }),
-      context: makeContextFunction(context),
-      plugins,
-      ...rest,
+      plugins: [
+        this.$app.env.get('NODE_ENV') === 'production'
+          ? // eslint-disable-next-line new-cap
+            ApolloServerPluginLandingPageProductionDefault({
+              footer: false,
+              ...apolloProductionLandingPageOptions,
+            })
+          : // eslint-disable-next-line new-cap
+            ApolloServerPluginLandingPageLocalDefault({
+              footer: false,
+              ...apolloLocalLandingPageOptions,
+            }),
+      ],
+      ...apolloServer,
     });
-
-    this.$app = application;
-
-    this.$path = path;
-
-    this.$enableUploads = config.enableUploads ?? true;
-    this.$uploadOptions = config.uploadOptions;
-  }
-
-  private async createGraphQLServerOptions(
-    ctx: HttpContextContract,
-  ): Promise<GraphQLOptions> {
-    return super.graphQLServerOptions({ ctx });
   }
 
   public applyMiddleware(): void {
@@ -117,51 +118,30 @@ export default class ApolloServer extends ApolloServerBase {
   }
 
   public getGraphqlHandler() {
-    const landingPage = this.getLandingPage();
-
     return async (ctx: HttpContextContract) => {
-      let body: Record<string, unknown>;
-      if (ctx.request.method() === 'GET') {
-        body = ctx.request.qs();
-        // We cannot use ctx.request.accepts because the Adonis application may
-        // be configured to spoof the Accept header.
-        // Instead, consider that if the request doesn't have a "query" parameter,
-        // it is a direct request, and display the landing page.
-        if (landingPage && !body.query) {
-          ctx.response.header('Content-Type', 'text/html');
-          return landingPage.html;
-        }
-      } else {
-        body = ctx.request.body();
-      }
-
-      const options = await this.createGraphQLServerOptions(ctx);
-      return graphqlAdonis(options, ctx, body);
+      return graphqlAdonis(this.$apolloServer, this.$contextFunction, ctx);
     };
   }
 
   public getUploadsMiddleware() {
     return async (ctx: HttpContextContract, next: () => void) => {
       if (ctx.request.is(['multipart/form-data'])) {
-        try {
-          const processed = await processRequest(
-            ctx.request.request,
-            ctx.response.response,
-            this.$uploadOptions,
-          );
-          ctx.request.setInitialBody(processed);
-        } catch (error: any) {
-          if (error.status && error.expose) {
-            ctx.response.status(error.status);
-          }
-          // eslint-disable-next-line @typescript-eslint/no-throw-literal
-          throw formatApolloErrors([error], {
-            formatter: this.requestOptions.formatError,
-            debug: this.requestOptions.debug,
-          });
-        }
+        const processed = await processRequest(
+          ctx.request.request,
+          ctx.response.response,
+          this.$uploadOptions,
+        );
+        ctx.request.setInitialBody(processed);
       }
       return next();
     };
+  }
+
+  public start() {
+    return this.$apolloServer.start();
+  }
+
+  public stop() {
+    return this.$apolloServer.stop();
   }
 }

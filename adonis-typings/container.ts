@@ -1,9 +1,9 @@
 declare module '@ioc:Adonis/Core/Application' {
-  import type * as Errors from '@ioc:Zakodium/Apollo/Errors';
   import type { ApolloServer } from '@ioc:Zakodium/Apollo/Server';
 
   export interface ContainerBindings {
-    'Zakodium/Apollo/Errors': typeof Errors;
+    /* eslint-disable @typescript-eslint/naming-convention */
     'Zakodium/Apollo/Server': ApolloServer;
+    /* eslint-enable @typescript-eslint/naming-convention */
   }
 }

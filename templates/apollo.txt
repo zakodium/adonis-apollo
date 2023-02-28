@@ -1,6 +1,6 @@
-import { ApolloConfig, ApolloBaseContext } from '@ioc:Zakodium/Apollo/Server';
+import { ApolloConfig } from '@ioc:Zakodium/Apollo/Server';
 
-interface ApolloContext extends ApolloBaseContext {
+interface ApolloContext {
   // Define here what will be available in the GraphQL context
 }
 
@@ -8,10 +8,8 @@ const apolloConfig: ApolloConfig<ApolloContext> = {
   schemas: 'app/Schemas',
   resolvers: 'app/Resolvers',
   path: '/graphql',
-  apolloServer: {
-    context({ ctx }) {
-      return { ctx };
-    },
+  context({ ctx }) {
+    return {};
   },
   executableSchema: {
     inheritResolversFromInterfaces: true,

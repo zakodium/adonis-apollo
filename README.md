@@ -22,10 +22,6 @@ Apollo GraphQL server for AdonisJS 5.
 
 </h3>
 
-## Prerequisites
-
-This provider requires Adonis v5 and won't work with AdonisJS v4.
-
 ## Installation
 
 ```console
@@ -55,12 +51,62 @@ ApolloServer.applyMiddleware();
 // You can also call `applyMiddleware` inside a route group:
 Route.group(() => {
   ApolloServer.applyMiddleware();
-}).middleware('someMiddleware');
+}).middleware('auth');
 ```
+
+### Troubleshooting
+
+#### Error: Query root type must be provided
+
+Apollo requires a query root type to be defined in your schema.
+To fix this error, create a file `app/Schemas/SomeSchema.graphql` with at least
+a `Query` type.
+
+For example:
+
+```graphql
+type Query {
+  hello: String!
+}
+```
+
+#### BadRequestError: This operation has been blocked as a potential Cross-Site Request Forgery (CSRF)
+
+This error may happen if you try to access the GraphQL endpoint from a browser.
+Make sure `forceContentNegotiationTo` is not unconditionally set to `'application/json'` in `config/app.ts`.
+You can either disable this option or set it to a function that ignores the GraphQL route.
 
 ## Configuration
 
-TODO
+### Landing page
+
+To configure the default landing page, you can pass `apolloProductionLandingPageOptions`
+or `apolloLocalLandingPageOptions` to the config. Another possibility is to
+override the `plugins` config in `config/apollo.ts`.
+
+The default configuration is:
+
+```ts
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
+
+const plugins = [
+  Env.get('NODE_ENV') === 'production'
+    ? ApolloServerPluginLandingPageProductionDefault({
+        footer: false,
+        ...apolloProductionLandingPageOptions,
+      })
+    : ApolloServerPluginLandingPageLocalDefault({
+        footer: false,
+        ...apolloLocalLandingPageOptions,
+      }),
+];
+```
+
+See the [Apollo Graphql documentation](https://www.apollographql.com/docs/apollo-server/api/plugin/landing-pages/) to
+learn how to customize or disable the landing page.
 
 ### Scalars
 
@@ -75,10 +121,13 @@ scalar DateTime
 
 ### Uploads
 
-To enable support for GraphQL uploads:
+To enable support for inline multipart/form-data uploads using [graphql-upload](https://github.com/jaydenseric/graphql-upload):
 
-- Update the config of the bodyparser in `config/bodyparser.ts` by adding your GraphQL route (by default: `/graphql`) to the `multipart.processManually` array.
+- Set `enableUploads: true` in `config/apollo.ts`.
+- Update the config of the body parser in `config/bodyparser.ts` by adding your GraphQL route (by default: `/graphql`) to the `multipart.processManually` array.
 - Add the Upload scalar to your schema: `scalar Upload`.
+- Make sure your GraphQL upload client sends the `'Apollo-Require-Preflight'` header, otherwise Apollo will reject multipart requests
+  to prevent [CSRF attacks](https://www.apollographql.com/docs/apollo-server/security/cors/#graphql-upload).
 
 ## License
 

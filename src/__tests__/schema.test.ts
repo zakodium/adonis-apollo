@@ -1,14 +1,17 @@
-import { join } from 'path';
+import path from 'node:path';
 
 import { FakeLogger } from '@adonisjs/logger';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
 
 describe('getTypeDefsAndResolvers', () => {
-  const fixture = join(__dirname, '../../test-utils/fixtures/schema/test1');
+  const fixture = path.join(
+    __dirname,
+    '../../test-utils/fixtures/schema/test1',
+  );
   const result = getTypeDefsAndResolvers(
-    [join(fixture, 'schemas')],
-    [join(fixture, 'resolvers')],
+    [path.join(fixture, 'schemas')],
+    [path.join(fixture, 'resolvers')],
   );
   it('should merge schemas', () => {
     // Query, Mutation

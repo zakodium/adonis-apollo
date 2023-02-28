@@ -1,42 +1,53 @@
-import {
-  GraphQLOptions,
-  runHttpQuery,
-  convertNodeHttpToRequest,
-  HttpQueryError,
-} from 'apollo-server-core';
+import type { IncomingHttpHeaders } from 'node:http';
+import { Readable } from 'node:stream';
 
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+// @ts-expect-error Package is compatible with both ESM and CJS.
+import { ApolloServer, type BaseContext, HeaderMap } from '@apollo/server';
 
-export async function graphqlAdonis(
-  options: GraphQLOptions,
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import type { ContextFn } from '@ioc:Zakodium/Apollo/Server';
+
+export async function graphqlAdonis<
+  ContextType extends BaseContext = BaseContext,
+>(
+  apolloServer: ApolloServer<ContextType>,
+  contextFunction: ContextFn<ContextType>,
   ctx: HttpContextContract,
-  body: Record<string, unknown>,
 ): Promise<void> {
-  try {
-    const { graphqlResponse, responseInit } = await runHttpQuery([ctx], {
-      method: 'POST',
-      options,
-      query: body,
-      request: convertNodeHttpToRequest(ctx.request.request),
+  apolloServer.assertStarted('AdonisJS');
+
+  const { body, headers, status } =
+    await apolloServer.executeHTTPGraphQLRequest({
+      httpGraphQLRequest: {
+        method: ctx.request.method(),
+        headers: transformHeaders(ctx.request.headers()),
+        body: ctx.request.body(),
+        search: ctx.request.parsedUrl.search ?? '',
+      },
+      context() {
+        return Promise.resolve(contextFunction({ ctx }));
+      },
     });
-    if (responseInit.headers) {
-      for (const [name, value] of Object.entries(responseInit.headers)) {
-        ctx.response.header(name, value);
-      }
-    }
-    ctx.response.status(responseInit.status || 200);
-    return ctx.response.send(graphqlResponse);
-  } catch (error) {
-    // TODO: use isHttpQueryError once available.
-    if (!(error instanceof HttpQueryError)) {
-      throw error;
-    }
-    if (error.headers) {
-      for (const [header, value] of Object.entries(error.headers)) {
-        ctx.response.header(header, value);
-      }
-    }
-    ctx.response.status(error.statusCode);
-    return ctx.response.send(error.message);
+
+  for (const [name, value] of headers) {
+    ctx.response.header(name, value);
   }
+
+  ctx.response.status(status ?? 200);
+
+  if (body.kind === 'complete') {
+    return ctx.response.send(body.string);
+  } else {
+    return ctx.response.stream(Readable.from(body.asyncIterator));
+  }
+}
+
+function transformHeaders(headers: IncomingHttpHeaders): HeaderMap {
+  const map = new HeaderMap();
+  for (const [name, value] of Object.entries(headers)) {
+    if (value) {
+      map.set(name, Array.isArray(value) ? value.join(', ') : value);
+    }
+  }
+  return map;
 }
