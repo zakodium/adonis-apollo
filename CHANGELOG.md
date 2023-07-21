@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/zakodium/adonis-apollo/compare/v0.18.0...v0.19.0) (2023-07-21)
+
+
+### Features
+
+* update dependencies ([#48](https://github.com/zakodium/adonis-apollo/issues/48)) ([efc724f](https://github.com/zakodium/adonis-apollo/commit/efc724fc07c1ef10368fbdc6199a54d8c295fa55))
+
 ## [0.18.0](https://github.com/zakodium/adonis-apollo/compare/v0.17.0...v0.18.0) (2023-02-28)
 
 
