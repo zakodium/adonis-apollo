@@ -1,7 +1,6 @@
 import type { IncomingHttpHeaders } from 'node:http';
 import { Readable } from 'node:stream';
 
-// @ts-expect-error Package is compatible with both ESM and CJS.
 import { ApolloServer, type BaseContext, HeaderMap } from '@apollo/server';
 
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';

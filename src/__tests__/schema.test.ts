@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import { FakeLogger } from '@adonisjs/logger';
+import { Kind } from 'graphql';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
 
@@ -17,14 +18,14 @@ describe('getTypeDefsAndResolvers', () => {
     // Query, Mutation
     expect(
       result.typeDefs.definitions.filter(
-        (def) => def.kind === 'ObjectTypeDefinition',
+        (def) => def.kind === Kind.OBJECT_TYPE_DEFINITION,
       ),
     ).toHaveLength(2);
 
     // URL, Bad, OtherBad
     expect(
       result.typeDefs.definitions.filter(
-        (def) => def.kind === 'ScalarTypeDefinition',
+        (def) => def.kind === Kind.SCALAR_TYPE_DEFINITION,
       ),
     ).toHaveLength(3);
   });

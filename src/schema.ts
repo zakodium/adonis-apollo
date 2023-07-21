@@ -1,5 +1,6 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import { Kind } from 'graphql';
 
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
@@ -19,11 +20,11 @@ export function getTypeDefsAndResolvers(
     schemasPaths.flatMap((schemasPath) => loadFilesSync(schemasPath)),
   );
   const resolvers = {
-    ...mergeResolvers([
-      ...resolversPaths.flatMap((resolversPath) =>
+    ...mergeResolvers(
+      resolversPaths.flatMap((resolversPath) =>
         loadFilesSync(resolversPath, { recursive: false }),
       ),
-    ]),
+    ),
   };
 
   const warnings: SchemaWarnings = {
@@ -33,7 +34,7 @@ export function getTypeDefsAndResolvers(
   };
 
   for (const definition of typeDefs.definitions) {
-    if (definition.kind === 'ScalarTypeDefinition') {
+    if (definition.kind === Kind.SCALAR_TYPE_DEFINITION) {
       const scalarName = definition.name.value;
       // Automatically add resolvers for known scalar types.
       if (scalarResolvers[scalarName] && !resolvers[scalarName]) {
@@ -44,7 +45,7 @@ export function getTypeDefsAndResolvers(
       if (!resolvers[scalarName]) {
         warnings.missingScalars.push(scalarName);
       }
-    } else if (definition.kind === 'ObjectTypeDefinition') {
+    } else if (definition.kind === Kind.OBJECT_TYPE_DEFINITION) {
       const objectName = definition.name.value;
 
       if (objectName === 'Query' && definition.fields) {

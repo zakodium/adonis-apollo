@@ -3,12 +3,10 @@ import path from 'node:path';
 import {
   ApolloServer as ApolloServerBase,
   type BaseContext,
-  // @ts-expect-error Package is compatible with both ESM and CJS.
 } from '@apollo/server';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
-  // @ts-expect-error Package is compatible with both ESM and CJS.
 } from '@apollo/server/plugin/landingPage/default';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import processRequest, {

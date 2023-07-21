@@ -1,13 +1,8 @@
 declare module '@ioc:Zakodium/Apollo/Server' {
-  import type {
-    ApolloServerOptions,
-    BaseContext,
-    // @ts-expect-error Package is compatible with both ESM and CJS.
-  } from '@apollo/server';
+  import type { ApolloServerOptions, BaseContext } from '@apollo/server';
   import {
     ApolloServerPluginLandingPageLocalDefaultOptions,
     ApolloServerPluginLandingPageProductionDefaultOptions,
-    // @ts-expect-error Package is compatible with both ESM and CJS.
   } from '@apollo/server/plugin/landingPage/default';
   import type { IExecutableSchemaDefinition } from '@graphql-tools/schema';
   import type { FileUpload } from 'graphql-upload/Upload.js';
@@ -30,7 +25,6 @@ declare module '@ioc:Zakodium/Apollo/Server' {
   }
 
   export type { ApolloServer };
-  // @ts-expect-error Package is compatible with both ESM and CJS.
   export type { BaseContext } from '@apollo/server';
 
   export interface ContextFnArgs {
