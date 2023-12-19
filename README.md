@@ -17,10 +17,10 @@ Apollo GraphQL server for AdonisJS 5.
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
-| :warning: This module is unstable and in active development. Use at your own risk. |
-| ---------------------------------------------------------------------------------- |
-
 </h3>
+
+> [!WARNING]
+> This module is unstable and in active development. Use at your own risk.
 
 ## Installation
 
