@@ -54,6 +54,94 @@ Route.group(() => {
 }).middleware('auth');
 ```
 
+### Schema
+
+The GraphQL schema should be defined in `.graphql` files (by default located in `app/Schemas`).
+The schema folders are scanned recursively.
+
+```graphql
+type Query {
+  hello: String!
+  rectangle: Rectangle!
+}
+
+type Rectangle {
+  width: Int!
+  height: Int!
+  area: Int!
+}
+```
+
+### Resolvers
+
+Resolvers should be exported from `.ts` files (by default located in `app/Resolvers`).
+Only the first level of resolver folders is scanned, so you can use sub-folders put additional code.
+
+All resolvers are merged into a single object, so you can define them in multiple files.
+
+There are two supported ways of defining resolvers:
+
+#### Exporting classes
+
+Multiple classes can be exported from a single file.
+The name of the exported binding will be used as the name of the GraphQL type.
+
+```ts
+export class Query {
+  hello() {
+    return 'world';
+  }
+
+  rectangle() {
+    return { width: 10, height: 20 };
+  }
+}
+
+export class Rectangle {
+  area(rectangle) {
+    return rectangle.width * rectangle.height;
+  }
+}
+```
+
+It is also possible to add the suffix `Resolvers` to the exported name to avoid potential conflicts:
+
+```ts
+interface Rectangle {
+  width: number;
+  height: number;
+}
+
+export class RectangleResolvers {
+  area(rectangle: Rectangle) {
+    return rectangle.width * rectangle.height;
+  }
+}
+```
+
+#### Exporting a single object
+
+When a single object is exported as default, it is assumed to be a map of resolvers.
+
+```ts
+interface Rectangle {
+  width: number;
+  height: number;
+}
+
+export default {
+  Query: {
+    hello: () => 'world',
+    rectangle() {
+      return { width: 10, height: 20 };
+    },
+  },
+  Rectangle: {
+    area: (rectangle: Rectangle) => rectangle.width * rectangle.height,
+  },
+};
+```
+
 ### Troubleshooting
 
 #### Error: Query root type must be provided
