@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/zakodium/adonis-apollo/compare/v0.19.0...v0.20.0) (2023-12-21)
+
+
+### Features
+
+* add support for IoC in resolvers defined as classes ([#52](https://github.com/zakodium/adonis-apollo/issues/52)) ([1b37226](https://github.com/zakodium/adonis-apollo/commit/1b37226d87f6db7998a3b9f4fb30ddb0fecb593c))
+
 ## [0.19.0](https://github.com/zakodium/adonis-apollo/compare/v0.18.0...v0.19.0) (2023-07-21)
 
 
