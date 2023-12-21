@@ -1,9 +1,11 @@
 import { loadFilesSync } from '@graphql-tools/load-files';
-import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import { mergeTypeDefs } from '@graphql-tools/merge';
 import { Kind } from 'graphql';
 
+import { ContainerBindings, IocContract } from '@ioc:Adonis/Core/Application';
 import { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
+import { loadResolvers } from './loadResolvers';
 import { scalarResolvers } from './scalarResolvers';
 
 interface SchemaWarnings {
@@ -15,17 +17,13 @@ interface SchemaWarnings {
 export function getTypeDefsAndResolvers(
   schemasPaths: string[],
   resolversPaths: string[],
+  container: IocContract<ContainerBindings>,
 ) {
   const typeDefs = mergeTypeDefs(
     schemasPaths.flatMap((schemasPath) => loadFilesSync(schemasPath)),
   );
-  const resolvers = {
-    ...mergeResolvers(
-      resolversPaths.flatMap((resolversPath) =>
-        loadFilesSync(resolversPath, { recursive: false }),
-      ),
-    ),
-  };
+
+  const resolvers = loadResolvers(resolversPaths, container);
 
   const warnings: SchemaWarnings = {
     missingQuery: [],
@@ -48,23 +46,25 @@ export function getTypeDefsAndResolvers(
     } else if (definition.kind === Kind.OBJECT_TYPE_DEFINITION) {
       const objectName = definition.name.value;
 
-      if (objectName === 'Query' && definition.fields) {
+      if (objectName === 'Query' && definition.fields && resolvers.Query) {
         // Warn about missing Query resolvers.
-        const queryResolvers = resolvers.Query || {};
         for (const queryField of definition.fields) {
           const queryName = queryField.name.value;
           // @ts-expect-error Using index signature for validation.
-          if (!queryResolvers[queryName]) {
+          if (!resolvers.Query[queryName]) {
             warnings.missingQuery.push(queryName);
           }
         }
-      } else if (objectName === 'Mutation' && definition.fields) {
+      } else if (
+        objectName === 'Mutation' &&
+        definition.fields &&
+        resolvers.Mutation
+      ) {
         // Warn about missing Mutation resolvers.
-        const mutationResolvers = resolvers.Mutation || {};
         for (const mutationField of definition.fields) {
           const mutationName = mutationField.name.value;
           // @ts-expect-error Using index signature for validation.
-          if (!mutationResolvers[mutationName]) {
+          if (!resolvers.Mutation[mutationName]) {
             warnings.missingMutation.push(mutationName);
           }
         }

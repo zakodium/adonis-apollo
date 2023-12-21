@@ -1,9 +1,12 @@
 import path from 'node:path';
 
+import { Ioc } from '@adonisjs/fold';
 import { FakeLogger } from '@adonisjs/logger';
 import { Kind } from 'graphql';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
+
+const testIoC = new Ioc();
 
 describe('getTypeDefsAndResolvers', () => {
   const fixture = path.join(
@@ -13,6 +16,7 @@ describe('getTypeDefsAndResolvers', () => {
   const result = getTypeDefsAndResolvers(
     [path.join(fixture, 'schemas')],
     [path.join(fixture, 'resolvers')],
+    testIoC,
   );
   it('should merge schemas', () => {
     // Query, Mutation
@@ -20,7 +24,7 @@ describe('getTypeDefsAndResolvers', () => {
       result.typeDefs.definitions.filter(
         (def) => def.kind === Kind.OBJECT_TYPE_DEFINITION,
       ),
-    ).toHaveLength(2);
+    ).toHaveLength(3);
 
     // URL, Bad, OtherBad
     expect(
@@ -34,6 +38,7 @@ describe('getTypeDefsAndResolvers', () => {
     expect(Object.keys(result.resolvers)).toStrictEqual([
       'Query',
       'Mutation',
+      'D',
       'URL',
     ]);
   });

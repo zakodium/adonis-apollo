@@ -77,6 +77,7 @@ export default class ApolloServer<
       resolversPaths.map((resolverPath) =>
         path.join(application.appRoot, resolverPath),
       ),
+      this.$app.container,
     );
 
     if (application.inDev) {
