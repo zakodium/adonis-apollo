@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0](https://github.com/zakodium/adonis-apollo/compare/v0.20.0...v0.21.0) (2024-01-09)
+
+
+### Features
+
+* provide another way of creating the formatError handler which enables importing IoC dependencies ([#56](https://github.com/zakodium/adonis-apollo/issues/56)) ([ee27363](https://github.com/zakodium/adonis-apollo/commit/ee27363853ac0a6ea36d478dd489eed6724f350a))
+
 ## [0.20.0](https://github.com/zakodium/adonis-apollo/compare/v0.19.0...v0.20.0) (2023-12-21)
 
 
