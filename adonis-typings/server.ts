@@ -16,7 +16,7 @@ declare module '@ioc:Zakodium/Apollo/Server' {
 
   export type Upload = Promise<FileUpload>;
 
-  export abstract class GraphqlExceptionFormatter<
+  export abstract class ApolloExceptionFormatter<
     ContextType extends BaseContext,
   > {
     public abstract formatError: ApolloServerOptions<ContextType>['formatError'];
