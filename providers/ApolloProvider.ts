@@ -1,7 +1,7 @@
 import { ApplicationContract } from '@ioc:Adonis/Core/Application';
-import { ApolloConfig } from '@ioc:Zakodium/Apollo/Server';
 
 import ApolloServer from '../src/ApolloServer';
+import createApolloConfig from '../src/createApolloConfig';
 
 export default class ApolloProvider {
   protected loading = false;
@@ -15,16 +15,16 @@ export default class ApolloProvider {
           'ApolloProvider was called during its initialization. To use this provider in resolvers, use dynamic `import()`.',
         );
       }
-      let apolloConfig = this.app.config.get('apollo', {}) as ApolloConfig;
-      const appUrl = this.app.env.get('APP_URL') as string;
-      if (!apolloConfig.appUrl && appUrl) {
-        apolloConfig = {
-          ...apolloConfig,
-          appUrl,
-        };
-      }
+      const apolloConfig = createApolloConfig(
+        this.app.config.get('apollo', {}),
+        {
+          ioc: this.app.container,
+          fallbackUrl: this.app.env.get('APP_URL'),
+        },
+      );
 
       this.loading = true;
+
       return new ApolloServer(this.app, apolloConfig, this.app.logger);
     });
   }
