@@ -1,10 +1,12 @@
 import { Ioc } from '@adonisjs/fold';
 
+import { ApolloExceptionFormatter } from '@ioc:Zakodium/Apollo/Server';
+
 import createApolloConfig from '../createApolloConfig';
 
 const testIoC = new Ioc();
 
-class Formatter {
+class Formatter implements ApolloExceptionFormatter {
   formatError() {
     return {
       message: 'error',
@@ -65,6 +67,10 @@ describe('apollo config', () => {
         introspection: true,
         formatError: expect.any(Function),
       },
+    });
+    // @ts-expect-error We don't care about the arguments here.
+    expect(config.apolloServer?.formatError()).toEqual({
+      message: 'error',
     });
   });
 });

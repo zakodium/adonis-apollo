@@ -16,10 +16,9 @@ declare module '@ioc:Zakodium/Apollo/Server' {
 
   export type Upload = Promise<FileUpload>;
 
-  export abstract class ApolloExceptionFormatter<
-    ContextType extends BaseContext,
-  > {
-    public abstract formatError: ApolloServerOptions<ContextType>['formatError'];
+  export interface ApolloExceptionFormatter {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formatError: Exclude<ApolloServerOptions<any>['formatError'], undefined>;
   }
 
   class ApolloServer {
