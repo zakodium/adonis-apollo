@@ -16,6 +16,11 @@ declare module '@ioc:Zakodium/Apollo/Server' {
 
   export type Upload = Promise<FileUpload>;
 
+  export interface ApolloExceptionFormatter {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formatError: Exclude<ApolloServerOptions<any>['formatError'], undefined>;
+  }
+
   class ApolloServer {
     public applyMiddleware(): void;
     public getGraphqlHandler(): RouteHandler;
@@ -102,4 +107,17 @@ declare module '@ioc:Zakodium/Apollo/Server' {
       'typeDefs' | 'resolvers'
     >;
   }
+
+  type ApolloServerUserOptions<ContextType extends BaseContext> = Omit<
+    ApolloServerOptions<ContextType>,
+    'formatError'
+  > & {
+    formatError?: ApolloServerOptions<ContextType>['formatError'] | string;
+  };
+  export type ApolloUserConfig<ContextType extends BaseContext> = Omit<
+    ApolloConfig<ContextType>,
+    'apolloServer'
+  > & {
+    apolloServer: ApolloServerUserOptions<ContextType>;
+  };
 }
