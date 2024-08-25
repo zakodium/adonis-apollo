@@ -56,13 +56,28 @@ function mapResolverClass(
   container: IocContract<ContainerBindings>,
 ) {
   const instance = container.make(value);
-  const prototype = Object.getPrototypeOf(instance);
+  const ownProperties = Object.getOwnPropertyDescriptors(instance);
+  const prototypeChainProperties: Record<string, PropertyDescriptor> = {};
+  walkPrototypeChain(instance, prototypeChainProperties);
   return Object.fromEntries(
-    Object.entries(Object.getOwnPropertyDescriptors(prototype))
+    Object.entries({ ...prototypeChainProperties, ...ownProperties })
       .filter(
         ([name, desc]) =>
           name !== 'constructor' && typeof desc.value === 'function',
       )
       .map(([name, desc]) => [name, desc.value.bind(instance)]),
   );
+}
+
+function walkPrototypeChain(
+  instance: unknown,
+  properties: Record<string, PropertyDescriptor>,
+) {
+  const proto = Object.getPrototypeOf(instance);
+  if (proto !== null && proto !== Object.prototype) {
+    // Use recursion so that the ancestor properties are added first and can
+    // be overridden by the descendant properties.
+    walkPrototypeChain(proto, properties);
+    Object.assign(properties, Object.getOwnPropertyDescriptors(proto));
+  }
 }

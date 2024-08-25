@@ -6,8 +6,43 @@ exports.Query = class Query {
   }
 };
 
-exports.DResolvers = class D {
+class DGrandParent {
+  value() {
+    return 'testGrandParent';
+  }
+  valueField = () => 'testGrandParent';
+
+  parentOverride() {
+    return 'testGrandParent';
+  }
+  parentOverrideField = () => 'testGrandParent';
+
+  grandParentValue() {
+    return 'testGrandParent';
+  }
+  grandParentValueField = () => 'testGrandParent';
+}
+
+class DParent extends DGrandParent {
+  value() {
+    return 'testParent';
+  }
+  valueField = () => 'testParent';
+
+  parentOverride() {
+    return 'testParent';
+  }
+  parentOverrideField = () => 'testParent';
+
+  parentValue() {
+    return 'testParent';
+  }
+  parentValueField = () => 'testParent';
+}
+
+exports.DResolvers = class D extends DParent {
   value() {
     return 'test';
   }
+  valueField = () => 'test';
 };
