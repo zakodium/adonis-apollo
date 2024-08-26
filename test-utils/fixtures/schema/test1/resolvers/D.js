@@ -41,8 +41,12 @@ class DParent extends DGrandParent {
 }
 
 exports.DResolvers = class D extends DParent {
+  #internalValue = 'test';
+
   value() {
-    return 'test';
+    return this.valueField();
   }
-  valueField = () => 'test';
+  valueField = () => {
+    return `${super.grandParentValue()}-${this.parentValueField()}-${this.#internalValue}`;
+  };
 };

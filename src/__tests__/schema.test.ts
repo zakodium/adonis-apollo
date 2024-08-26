@@ -68,11 +68,11 @@ describe('getTypeDefsAndResolvers', () => {
     }
 
     for (const [resolver, expected] of [
-      ['value', 'test'],
+      ['value', 'testGrandParent-testParent-test'],
       ['parentOverride', 'testParent'],
       ['grandParentValue', 'testGrandParent'],
       ['parentValue', 'testParent'],
-      ['valueField', 'test'],
+      ['valueField', 'testGrandParent-testParent-test'],
       ['parentOverrideField', 'testParent'],
       ['grandParentValueField', 'testGrandParent'],
       ['parentValueField', 'testParent'],
