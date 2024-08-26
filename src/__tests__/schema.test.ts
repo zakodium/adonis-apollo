@@ -2,7 +2,8 @@ import path from 'node:path';
 
 import { Ioc } from '@adonisjs/fold';
 import { FakeLogger } from '@adonisjs/logger';
-import { Kind } from 'graphql';
+import type { IFieldResolver } from '@graphql-tools/utils';
+import { type GraphQLResolveInfo, Kind } from 'graphql';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
 
@@ -13,7 +14,7 @@ describe('getTypeDefsAndResolvers', () => {
     __dirname,
     '../../test-utils/fixtures/schema/test1',
   );
-  const result = getTypeDefsAndResolvers(
+  const { typeDefs, resolvers, warnings } = getTypeDefsAndResolvers(
     [path.join(fixture, 'schemas')],
     [path.join(fixture, 'resolvers')],
     testIoC,
@@ -21,35 +22,69 @@ describe('getTypeDefsAndResolvers', () => {
   it('should merge schemas', () => {
     // Query, Mutation
     expect(
-      result.typeDefs.definitions.filter(
+      typeDefs.definitions.filter(
         (def) => def.kind === Kind.OBJECT_TYPE_DEFINITION,
       ),
     ).toHaveLength(3);
 
     // URL, Bad, OtherBad
     expect(
-      result.typeDefs.definitions.filter(
+      typeDefs.definitions.filter(
         (def) => def.kind === Kind.SCALAR_TYPE_DEFINITION,
       ),
     ).toHaveLength(3);
   });
 
   it('should merge resolvers', () => {
-    expect(Object.keys(result.resolvers)).toStrictEqual([
+    expect(Object.keys(resolvers)).toStrictEqual([
       'Query',
       'Mutation',
       'D',
       'URL',
     ]);
+    expect(Object.keys(resolvers.Query)).toStrictEqual(['queryA', 'queryD']);
+    expect(Object.keys(resolvers.Mutation)).toStrictEqual(['mutationA']);
+  });
+
+  it('should walk the class prototype chain and support class fields', () => {
+    const DResolvers = resolvers.D as Record<
+      string,
+      IFieldResolver<unknown, unknown>
+    >;
+
+    expect(Object.keys(DResolvers)).toStrictEqual([
+      'value',
+      'parentOverride',
+      'grandParentValue',
+      'parentValue',
+      'valueField',
+      'parentOverrideField',
+      'grandParentValueField',
+      'parentValueField',
+    ]);
+
+    function callResolver(resolver: string) {
+      return DResolvers[resolver](null, {}, null, {} as GraphQLResolveInfo);
+    }
+
+    for (const [resolver, expected] of [
+      ['value', 'testGrandParent-testParent-test'],
+      ['parentOverride', 'testParent'],
+      ['grandParentValue', 'testGrandParent'],
+      ['parentValue', 'testParent'],
+      ['valueField', 'testGrandParent-testParent-test'],
+      ['parentOverrideField', 'testParent'],
+      ['grandParentValueField', 'testGrandParent'],
+      ['parentValueField', 'testParent'],
+    ]) {
+      expect(callResolver(resolver)).toBe(expected);
+    }
   });
 
   it('should warn about missing resolvers', () => {
-    expect(result.warnings.missingQuery).toStrictEqual(['queryB', 'queryC']);
-    expect(result.warnings.missingMutation).toStrictEqual([
-      'mutationB',
-      'mutationC',
-    ]);
-    expect(result.warnings.missingScalars).toStrictEqual(['Bad', 'OtherBad']);
+    expect(warnings.missingQuery).toStrictEqual(['queryB', 'queryC']);
+    expect(warnings.missingMutation).toStrictEqual(['mutationB', 'mutationC']);
+    expect(warnings.missingScalars).toStrictEqual(['Bad', 'OtherBad']);
   });
 });
 
