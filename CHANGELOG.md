@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/zakodium/adonis-apollo/compare/v0.21.0...v0.22.0) (2024-08-26)
+
+
+### Features
+
+* allow class fields resolvers and support inheritance from class prototype ([#60](https://github.com/zakodium/adonis-apollo/issues/60)) ([1fdb109](https://github.com/zakodium/adonis-apollo/commit/1fdb10912e4382847e7b8164052bbad43048b76f))
+
 ## [0.21.0](https://github.com/zakodium/adonis-apollo/compare/v0.20.0...v0.21.0) (2024-01-09)
 
 
