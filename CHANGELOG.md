@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.1](https://github.com/zakodium/adonis-apollo/compare/v0.22.0...v0.22.1) (2024-08-27)
+
+
+### Bug Fixes
+
+* typescript build ([#63](https://github.com/zakodium/adonis-apollo/issues/63)) ([fb69c00](https://github.com/zakodium/adonis-apollo/commit/fb69c00f07fe09508ec740d102e720266324c94f))
+
 ## [0.22.0](https://github.com/zakodium/adonis-apollo/compare/v0.21.0...v0.22.0) (2024-08-26)
 
 
