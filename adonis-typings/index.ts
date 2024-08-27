@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
+/* eslint-disable import/no-unassigned-import */
 
-/// <reference path="./container.ts" />
-/// <reference path="./server.ts" />
+import './container';
+import './server';
