@@ -3,7 +3,8 @@ import path from 'node:path';
 import { Ioc } from '@adonisjs/fold';
 import { FakeLogger } from '@adonisjs/logger';
 import type { IFieldResolver } from '@graphql-tools/utils';
-import { type GraphQLResolveInfo, Kind } from 'graphql';
+import type { GraphQLResolveInfo } from 'graphql';
+import { Kind } from 'graphql';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
 

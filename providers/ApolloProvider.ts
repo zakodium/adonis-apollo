@@ -1,4 +1,4 @@
-import { ApplicationContract } from '@ioc:Adonis/Core/Application';
+import type { ApplicationContract } from '@ioc:Adonis/Core/Application';
 
 import ApolloServer from '../src/ApolloServer';
 import createApolloConfig from '../src/createApolloConfig';

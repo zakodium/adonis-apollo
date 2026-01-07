@@ -1,5 +1,5 @@
-import { IocContract } from '@adonisjs/fold';
-import { ApolloServerOptions, BaseContext } from '@apollo/server';
+import type { IocContract } from '@adonisjs/fold';
+import type { ApolloServerOptions, BaseContext } from '@apollo/server';
 
 import type {
   ApolloConfig,

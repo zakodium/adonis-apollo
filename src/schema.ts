@@ -2,8 +2,11 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeTypeDefs } from '@graphql-tools/merge';
 import { Kind } from 'graphql';
 
-import { ContainerBindings, IocContract } from '@ioc:Adonis/Core/Application';
-import { LoggerContract } from '@ioc:Adonis/Core/Logger';
+import type {
+  ContainerBindings,
+  IocContract,
+} from '@ioc:Adonis/Core/Application';
+import type { LoggerContract } from '@ioc:Adonis/Core/Logger';
 
 import { loadResolvers } from './loadResolvers';
 import { scalarResolvers } from './scalarResolvers';

@@ -1,6 +1,6 @@
 import { Ioc } from '@adonisjs/fold';
 
-import { ApolloExceptionFormatter } from '@ioc:Zakodium/Apollo/Server';
+import type { ApolloExceptionFormatter } from '@ioc:Zakodium/Apollo/Server';
 
 import createApolloConfig from '../createApolloConfig';
 

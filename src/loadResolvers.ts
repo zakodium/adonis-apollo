@@ -3,7 +3,10 @@ import assert from 'node:assert';
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers } from '@graphql-tools/merge';
 
-import { ContainerBindings, IocContract } from '@ioc:Adonis/Core/Application';
+import type {
+  ContainerBindings,
+  IocContract,
+} from '@ioc:Adonis/Core/Application';
 
 type UnknownConstructor = new (...args: unknown[]) => unknown;
 
@@ -41,7 +44,7 @@ function makeResolversPartial(
         if (typeof value === 'object' && value !== null) {
           return [key, value];
         } else {
-          assert(typeof value === 'function');
+          assert.ok(typeof value === 'function');
           return [
             key,
             mapResolverClass(value as UnknownConstructor, container),
