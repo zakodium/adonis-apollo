@@ -1,4 +1,4 @@
-import { GraphQLScalarType } from 'graphql';
+import type { GraphQLScalarType } from 'graphql';
 import { resolvers } from 'graphql-scalars';
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 

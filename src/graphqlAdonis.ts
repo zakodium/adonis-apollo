@@ -1,7 +1,8 @@
 import type { IncomingHttpHeaders } from 'node:http';
 import { Readable } from 'node:stream';
 
-import { ApolloServer, type BaseContext, HeaderMap } from '@apollo/server';
+import type { ApolloServer, BaseContext } from '@apollo/server';
+import { HeaderMap } from '@apollo/server';
 
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import type { ContextFn } from '@ioc:Zakodium/Apollo/Server';

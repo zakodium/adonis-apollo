@@ -40,6 +40,7 @@ class DParent extends DGrandParent {
   parentValueField = () => 'testParent';
 }
 
+// eslint-disable-next-line import/order
 exports.DResolvers = class D extends DParent {
   #internalValue = 'test';
 

@@ -1,6 +1,6 @@
 declare module '@ioc:Zakodium/Apollo/Server' {
   import type { ApolloServerOptions, BaseContext } from '@apollo/server';
-  import {
+  import type {
     ApolloServerPluginLandingPageLocalDefaultOptions,
     ApolloServerPluginLandingPageProductionDefaultOptions,
   } from '@apollo/server/plugin/landingPage/default';
@@ -8,7 +8,7 @@ declare module '@ioc:Zakodium/Apollo/Server' {
   import type { FileUpload } from 'graphql-upload/Upload.js';
   import type { UploadOptions } from 'graphql-upload/processRequest.js';
 
-  import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+  import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
   import type {
     RouteHandler,
     RouteMiddlewareHandler,

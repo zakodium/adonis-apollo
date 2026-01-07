@@ -1,17 +1,14 @@
 import path from 'node:path';
 
-import {
-  ApolloServer as ApolloServerBase,
-  type BaseContext,
-} from '@apollo/server';
+import type { BaseContext } from '@apollo/server';
+import { ApolloServer as ApolloServerBase } from '@apollo/server';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import processRequest, {
-  UploadOptions,
-} from 'graphql-upload/processRequest.js';
+import type { UploadOptions } from 'graphql-upload/processRequest.js';
+import processRequest from 'graphql-upload/processRequest.js';
 
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -116,24 +113,28 @@ export default class ApolloServer<
     }
   }
 
+  #graphqlHandler = async (ctx: HttpContextContract) => {
+    return graphqlAdonis(this.$apolloServer, this.$contextFunction, ctx);
+  };
+
   public getGraphqlHandler() {
-    return async (ctx: HttpContextContract) => {
-      return graphqlAdonis(this.$apolloServer, this.$contextFunction, ctx);
-    };
+    return this.#graphqlHandler;
   }
 
+  #uploadsMiddleware = async (ctx: HttpContextContract, next: () => void) => {
+    if (ctx.request.is(['multipart/form-data'])) {
+      const processed = await processRequest(
+        ctx.request.request,
+        ctx.response.response,
+        this.$uploadOptions,
+      );
+      ctx.request.setInitialBody(processed);
+    }
+    return next();
+  };
+
   public getUploadsMiddleware() {
-    return async (ctx: HttpContextContract, next: () => void) => {
-      if (ctx.request.is(['multipart/form-data'])) {
-        const processed = await processRequest(
-          ctx.request.request,
-          ctx.response.response,
-          this.$uploadOptions,
-        );
-        ctx.request.setInitialBody(processed);
-      }
-      return next();
-    };
+    return this.#uploadsMiddleware;
   }
 
   public start() {
