@@ -1,4 +1,5 @@
 import { Ioc } from '@adonisjs/fold';
+import { describe, expect, it } from 'vitest';
 
 import type { ApolloExceptionFormatter } from '@ioc:Zakodium/Apollo/Server';
 

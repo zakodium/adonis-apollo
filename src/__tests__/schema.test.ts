@@ -5,6 +5,7 @@ import { FakeLogger } from '@adonisjs/logger';
 import type { IFieldResolver } from '@graphql-tools/utils';
 import type { GraphQLResolveInfo } from 'graphql';
 import { Kind } from 'graphql';
+import { describe, expect, it } from 'vitest';
 
 import { getTypeDefsAndResolvers, printWarnings } from '../schema';
 
