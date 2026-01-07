@@ -7,8 +7,8 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import type { UploadOptions } from 'graphql-upload/processRequest.js';
-import processRequest from 'graphql-upload/processRequest.js';
+import type { ProcessRequestOptions } from 'graphql-upload/processRequest.mjs';
+import processRequest from 'graphql-upload/processRequest.mjs';
 
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
@@ -31,7 +31,7 @@ export default class ApolloServer<
   private $path: string;
 
   private $enableUploads: boolean;
-  private $uploadOptions?: UploadOptions;
+  private $uploadOptions?: ProcessRequestOptions;
 
   public constructor(
     application: ApplicationContract,

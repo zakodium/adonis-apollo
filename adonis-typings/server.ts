@@ -5,8 +5,10 @@ declare module '@ioc:Zakodium/Apollo/Server' {
     ApolloServerPluginLandingPageProductionDefaultOptions,
   } from '@apollo/server/plugin/landingPage/default';
   import type { IExecutableSchemaDefinition } from '@graphql-tools/schema';
-  import type { FileUpload } from 'graphql-upload/Upload.js';
-  import type { UploadOptions } from 'graphql-upload/processRequest.js';
+  import type {
+    FileUpload,
+    ProcessRequestOptions,
+  } from 'graphql-upload/processRequest.mjs';
 
   import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
   import type {
@@ -97,7 +99,7 @@ declare module '@ioc:Zakodium/Apollo/Server' {
     /**
      * If file upload is enabled, options passed to `graphql-upload`.
      */
-    uploadOptions?: UploadOptions;
+    uploadOptions?: ProcessRequestOptions;
 
     /**
      * Additional config passed to the `makeExecutableSchema` function from `@graphql-tools/schema`.

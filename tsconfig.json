@@ -7,11 +7,11 @@
     "outDir": "./lib",
     "inlineSourceMap": true,
     "strict": true,
-    "lib": ["ES2020"],
-    "target": "es2020",
-    "types": ["@adonisjs/core", "@types/jest"],
+    "lib": ["ES2023"],
+    "target": "ES2023",
+    "types": ["@adonisjs/core"],
     "strictFunctionTypes": false,
     "skipLibCheck": true
   },
-  "include": ["./adonis-typings/**/*", "./src/**/*", "./providers/**/*"]
+  "include": ["adonis-typings", "providers", "src", "vitest.config.mts"]
 }
