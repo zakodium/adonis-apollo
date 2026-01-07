@@ -54,7 +54,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@adonisjs/core": "^5.9.0",
+    "@adonisjs/core": "^6.19.2",
     "@adonisjs/fold": "^8.2.0",
     "@adonisjs/logger": "^4.1.5",
     "@types/jest": "^30.0.0",
