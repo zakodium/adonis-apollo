@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.23.0](https://github.com/zakodium/adonis-apollo/compare/v0.22.1...v0.23.0) (2026-01-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* latin1 characters are now correctly decoded. If you used the workaround from https://github.com/jaydenseric/graphql-upload/issues/328, you should remove it.
+* Drop support for Node.js 18.
+
+### Features
+
+* update Apollo server to v5 ([#65](https://github.com/zakodium/adonis-apollo/issues/65)) ([82050b6](https://github.com/zakodium/adonis-apollo/commit/82050b6ca51247e4999f0e0eb84d029e4e23b618))
+* update graphql-upload ([#70](https://github.com/zakodium/adonis-apollo/issues/70)) ([6cb34e0](https://github.com/zakodium/adonis-apollo/commit/6cb34e0c03575d29055ab1f65590fa9434dd7f95))
+
 ## [0.22.1](https://github.com/zakodium/adonis-apollo/compare/v0.22.0...v0.22.1) (2024-08-27)
 
 
