@@ -50,7 +50,7 @@
   },
   "homepage": "https://github.com/zakodium/adonis-apollo#readme",
   "devDependencies": {
-    "@adonisjs/core": "^5.9.0",
+    "@adonisjs/core": "^7.0.0",
     "@adonisjs/fold": "^8.2.0",
     "@adonisjs/logger": "^4.1.5",
     "@vitest/coverage-v8": "^4.0.16",
